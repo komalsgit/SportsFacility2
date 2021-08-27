@@ -1,0 +1,19 @@
+[
+    {
+      "id": 1,
+      "facilityid": 1,
+      "facilityname": "ABC Badminton",
+      "address": "Guindy",
+      "location": "chennai"
+    },
+    {
+      "id": 2,
+      "facilityid": "2",
+      "facilityname": "PQR Pune",
+      "address": "Central",
+      "location": "chennai"
+    }
+   
+   
+   
+  ]

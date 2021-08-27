@@ -1,0 +1,47 @@
+.App {
+  text-align: center;
+}
+.frm1{
+  padding: 5px 5px;
+
+}
+.lbl2{
+  text-align: left;
+
+
+ padding-bottom: 10px;
+}
+.lbltxt{
+  
+  position:relative;
+}
+.h2{
+  background-color: rgb(205, 235, 253);
+ 
+}
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+  color:midnightblue;
+  text-align: left;
+}
+
+
+.wrapper {
+  padding: 5px 20px;
+  border-color: #61dafb;
+  background-color: aqua;
+  background-color: rgb(180, 218, 218);
+  text-align: center;
+}
+
+.wrapper fieldset {
+  margin: 20px 0;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+

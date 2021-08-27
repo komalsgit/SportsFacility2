@@ -1,0 +1,33 @@
+.App {
+    text-align: center;
+  }
+  .frm1{
+    padding: 5px 20px;
+    text-align: center;
+    background-color: azure;
+  
+  }
+  .wrapper {
+    padding: 20px 20px;
+    border-color: #61dafb;
+    background-color: rgb(180, 218, 218);
+    text-align: center;
+  }
+  .h2{
+    text-align: center;
+    background-color: rgb(205, 235, 253);
+    position: relative;
+  }
+  .main_div{
+  size: 60px;
+  font-size: medium;
+  
+  }
+  .txt1{
+    tab-size: 60px;
+  }
+  
+  
+  
+  
+  
