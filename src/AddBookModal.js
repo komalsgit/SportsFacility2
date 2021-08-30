@@ -1,19 +1,17 @@
 import React, {Component} from 'react';
 import {Modal,Button,Row,Col,Form,} from 'react-bootstrap';
-
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 
-  export class AddBookModal extends Component{
+export class AddBookModal extends Component{
    
     constructor(props){
         super(props);
         this.state = { LOCATIONID :"",locations:[],FACILITYID:"",facies:[],TIMESLOTID:"",
         slotss:[],BOOKINGSTATUSID:"",bstatus:[],SPORTSID:"",sportss:[],
-        users:[],USERID:"",EQUIPMENTID:"",equips:[],snackbaropen: false, snackbarmsg: ''};
+        users:[],USERID:"",EQUIPMENTID:"",EVENTDATE:"",equips:[],snackbaropen: false, snackbarmsg: '',selectedDate: 0,date:0};
         this.handleSubmit = this.handleSubmit.bind(this);
-      
-       }
+        }
        componentDidMount(){
         fetch ('https://localhost:44345/api/Locationss')
         .then(response => response.json())
@@ -61,7 +59,15 @@ import IconButton from '@material-ui/core/IconButton';
          handleSubmit(event) {
     
             event.preventDefault();
-
+            alert(this.state.EVENTDATE);
+            alert(this.state.LOCATIONID);
+            alert(this.state.FACILITYID);
+            alert(this.state.SPORTSID);
+            alert(this.state.EQUIPMENTID);
+            alert(this.state.TIMESLOTID);
+            alert(this.state.BOOKINGSTATUSID);
+            alert(this.state.USERID);
+ 
             
         
             fetch ('https://localhost:44345/api/TimeslotBookings/',{
@@ -77,8 +83,8 @@ import IconButton from '@material-ui/core/IconButton';
                     LOCATIONID:this.state.LOCATIONID,
             
                     SPORTSID:this.state.SPORTSID,
-                    EVENTDATE:null,
-                    CREATEDDATE:null,
+                    EVENTDATE:event.target.EVENTDATE.value,
+                    CREATEDDATE:event.target.CREATEDDATE.value,
                     BOOKINGSTATUSID:this.state.BOOKINGSTATUSID,
                    FACILITYID:this.state.FACILITYID,
                   
@@ -101,34 +107,35 @@ import IconButton from '@material-ui/core/IconButton';
                 )
         }
       
-        handleAlternate(event) {
-          event.preventDefault();
-          fetch(`https://localhost:44345/api/SportfromFacility?FACILITYID=${this.state.FACILITYID}`)
-            .then(response => response.json())
-            .then(data => {
-              this.setState({ sportss: data })
-            });
-            }
+      //  handleAlternate(event) {
+        //  event.preventDefault();
+        //  fetch(`https://localhost:44345/api/SportfromFacility?FACILITYID=${this.state.FACILITYID}`)
+           // .then(response => response.json())
+          //  .then(data => {
+            //  this.setState({ sportss: data })
+           // });
+           // }
      
   
        
-        handleAlternate1(event) {
-          event.preventDefault();
-          fetch(`https://localhost:44345/api/FacilityfromLocation?LOCATIONID=${this.state.LOCATIONID}`)
-            .then(response => response.json())
-            .then(data => {
-              this.setState({ facies: data })
-            });
+      //  handleAlternate1(event) {
+       //   event.preventDefault();
+        //  fetch(`https://localhost:44345/api/FacilityfromLocation?LOCATIONID=${this.state.LOCATIONID}`)
+         //   .then(response => response.json())
+           // .then(data => {
+             // this.setState({ facies: data })
+          //  });
            
-        }
-       handleAlt(event) {
-          event.preventDefault();
-          fetch(`https://localhost:44345/api/EquipmentfromSport?SPORTSID=${this.state.SPORTSID}`)
-            .then(response => response.json())
-           .then(data => {
-               this.setState({ equips: data })
-            });
-         }
+      //  }
+      // handleAlternate2(event) {
+        //  event.preventDefault();
+         // fetch(`https://localhost:44345/api/EquipmentfromSport?SPORTSID=${this.state.SPORTSID}`)
+          //  .then(response => response.json())
+          // .then(data => {
+            //   this.setState({ equips: data })
+          //  });
+       //  }
+     
        
       
       
@@ -141,7 +148,7 @@ import IconButton from '@material-ui/core/IconButton';
        
       
         render() {
-        
+        const{selectedDate}=this.state;
         return(
             <div className="container" >
                 <Snackbar
@@ -168,7 +175,7 @@ import IconButton from '@material-ui/core/IconButton';
           >
             <Modal.Header >
               <Modal.Title id="contained-modal-title-vcenter">
-               Add Facility
+               Add Booking
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -189,7 +196,11 @@ import IconButton from '@material-ui/core/IconButton';
 
                     <br></br>
                     <Form.Group>
-                      <Button  variant="secondary"onClick={this.handleAlternate1.bind(this)} >Add</Button>
+                      <Button  variant="secondary" onClick={() =>  fetch(`https://localhost:44345/api/FacilityfromLocation?LOCATIONID=${this.state.LOCATIONID}`)
+            .then(response => response.json())
+            .then(data => {
+              this.setState({ facies: data })
+            })} >Add</Button>
                       </Form.Group>
                     <br></br>
 
@@ -206,7 +217,11 @@ import IconButton from '@material-ui/core/IconButton';
 
                     <br></br>
                        <Form.Group>
-                      <Button  variant="secondary"onClick={this.handleAlternate.bind(this)}>Add</Button>
+                      <Button  variant="secondary" onClick={()=> fetch(`https://localhost:44345/api/SportfromFacility?FACILITYID=${this.state.FACILITYID}`)
+            .then(response => response.json())
+            .then(data => {
+              this.setState({ sportss: data })
+            })}>Add</Button>
                       </Form.Group>
                     <br></br>
 
@@ -221,8 +236,12 @@ import IconButton from '@material-ui/core/IconButton';
                       
                     </Form.Control>
                     <br></br>
-                       <Form.Group>
-                      <Button  variant="secondary"onClick={this.handleAlt.bind(this)} >Add</Button>
+                    <Form.Group>
+                      <Button  variant="secondary"onClick={()=>fetch(`https://localhost:44345/api/EquipmentfromSport?SPORTSID=${this.state.SPORTSID}`)
+            .then(response => response.json())
+           .then(data => {
+               this.setState({ equips: data })
+            })} >Add</Button>
                       </Form.Group>
 
 
@@ -259,7 +278,7 @@ import IconButton from '@material-ui/core/IconButton';
                     </Form.Control>
                     <br></br>
                     <Form.Label>User</Form.Label>
-                    <Form.Control as="select" onChange={(ddl=>this.setState({USERID:ddl.target.value}))} controlId="userDropdown" >
+                    <Form.Control as="select" onChange={(ddl=>this.setState({USERID:ddl.target.value}))} controlid="userDropdown" >
                       {
                         this.state.users.map(location=>
                           <option  value={location.USERID} >{location.EMAIL}</option>
@@ -268,6 +287,30 @@ import IconButton from '@material-ui/core/IconButton';
                       
                     </Form.Control>
                     <br></br>
+                    <Form.Group controlId="EVENTDATE">
+                     <Form.Label> Event Date</Form.Label>
+                     <Form.Control
+                     type="date"
+                     name="EVENTDATE"
+                     id="EVENTDATE"
+                     required
+                     placeholder="Date"
+                     />
+                     </Form.Group>
+                   
+                    <br></br>
+                    <Form.Group controlId="CREATEDDATE">
+                     <Form.Label> Booking Date</Form.Label>
+                     <Form.Control
+                     type="date"
+                     name="CREATEDDATE"
+                     id="CREATEDDATE"
+                     required
+                     placeholder="Date"
+                     />
+                     </Form.Group>
+                   
+                 <br></br>
                 <Form.Group>
                 <Button type="submit">Submit</Button>
                 </Form.Group>

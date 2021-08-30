@@ -19,10 +19,10 @@ export class AddSportModal extends Component {
       .then(response => response.json())
       .then(data => {
         this.setState({ equips: data })
-        ////  fetch ('https://localhost:44345/api/AddSportsTotal')
-        ////  .then(response => response.json())
-        ////   .then(data => {
-        ////    this.setState({sports:data})
+       fetch ('https://localhost:44345/api/AddSportsTotal')
+       .then(response => response.json())
+       .then(data => {
+        this.setState({sports:data})
         fetch('https://localhost:44345/api/TimeSlots/GetTimeslotsList')
           .then(response => response.json())
           .then(data => {
@@ -53,7 +53,7 @@ export class AddSportModal extends Component {
                         // .then(data => {
                         // this.setState({sports:data})
                         // console.log(p)
-                        // }); 
+                         }); 
 
                       })
                   });
@@ -110,14 +110,14 @@ export class AddSportModal extends Component {
     });
   }
   //const p= this.state.FACILITYID;
-  handleAlternate(event) {
-    event.preventDefault();
-    fetch(`https://localhost:44345/api/SportfromFacility?FACILITYID=${this.state.FACILITYID}`)
-      .then(response => response.json())
-      .then(data => {
-        this.setState({ sports: data })
-      });
-  }
+  //handleAlternate(event) {
+   // event.preventDefault();
+   // fetch(`https://localhost:44345/api/SportfromFacility?FACILITYID=${this.state.FACILITYID}`)
+     // .then(response => response.json())
+     // .then(data => {
+      //  this.setState({ sports: data })
+     // });
+ // }
   render() {
     return (
       <div className="container" >
@@ -174,10 +174,6 @@ export class AddSportModal extends Component {
 
                       }
                     </Form.Control>
-                     <br></br>
-                       <Form.Group>
-                      <Button  variant="secondary"onClick={this.handleAlternate.bind(this)} >Add</Button>
-                      </Form.Group>
                       <br></br>
                     <Form.Label>Sport</Form.Label>
                     <Form.Control as="select" onChange={(ddl => this.setState({ SPORTSID: ddl.target.value }))} controlId="SporteDropdown" >

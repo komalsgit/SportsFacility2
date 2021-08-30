@@ -192,6 +192,8 @@ componentDidUpdate() {
                                     <th>Booking Id</th>
                                     <th>Facility</th>
                                     <th>Sport</th>
+                                    <th>Event Date</th>
+                                    <th>Booking Date</th>
                                     <th>TimeSlot</th>
                                     <th>Booking Status</th>
                                     <th>Location</th>
@@ -226,6 +228,8 @@ componentDidUpdate() {
                                 <td>{val && val.BOOKINGSID}</td>
                                 <td>{val && val.FACILITYNAME}</td>
                                 <td>{val && val.SPORTNAME}</td>
+                                <td>{val && val.EVENTDATE}</td>
+                                <td>{val && val.CREATEDDATE}</td>
                                 <td>{val && val.TIMESLOT}</td>
                                 <td>{val && val.BOOKINGSTATUS}</td>
                                 <td>{val && val.LOCATIONNAME}</td>
@@ -249,6 +253,8 @@ componentDidUpdate() {
                                     <th>BookingId</th>
                                     <th>Facility</th>
                                     <th>Sport</th>
+                                    <th>Event Date</th>
+                                    <th>Booking Date</th>
                                     <th>TimeSlot</th>
                                     <th>Booking Status</th>
                                     <th>Location</th>
@@ -263,6 +269,8 @@ componentDidUpdate() {
                                         <td>{sport && sport.BOOKINGSID}</td>
                                         <td>{sport && sport.FACILITYNAME}</td>
                                         <td>{sport && sport.SPORTNAME}</td>
+                                        <td>{sport && sport.EVENTDATE}</td>
+                                <td>{sport && sport.CREATEDDATE}</td>
                                         <td>{sport && sport.TIMESLOT}</td>
 
 

@@ -13,7 +13,8 @@ import { EditFacModel } from './EditFacModel';
                 super(props);
                 this.state = {
                     isAvailable: true,
-                    numberOfEquipments: 2
+                    numberOfEquipments: 2,
+                    searchTerm1:'',
                   
                 };
                 this.state={facs:[],locs:[], addModalShow : false,editModalShow : false}
@@ -130,6 +131,77 @@ import { EditFacModel } from './EditFacModel';
                             </div>
                             <br />
                             <br></br>
+                            Location Name :<input type ="text" placeholder="Search..."
+                      onChange={(event)=> {
+                          this.setState({searchTerm1 : event.target.value})
+                      }}
+                      /> 
+                 
+                          { facs && facs.filter((val) => {
+                           if (val && val.LOCATIONNAME.includes(this.state.searchTerm1)){
+                             return val             
+                         }
+                           else if(this.state.searchTerm1 == "") {
+                             return 0
+                           }
+                            })
+                      .map((val,key) =>{
+                          return (
+                                <Table>
+                                <thead>
+                                    <tr>
+                                         <th></th>
+                                         <th>FACILITYID</th>
+                                        <th>FACILITYNAME</th>
+                                        <th>LOCATION</th>
+                                        <th type="hidden"></th>
+                                        <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                            <tbody>
+                            <tr key={key}>
+                                    
+                                        <td>{val && val.FACILITYID}</td>
+                                        <td>{val && val.FACILITYNAME}</td>
+                                        <td>{val && val.LOCATIONNAME}</td>
+                                        <td>{val && val.LOCATIONNAME}</td>
+                                        <td  type="hidden">{val && val.FACILITYENABLED}</td>
+                                        <td>
+                                        <ButtonToolbar>
+                                            <Button 
+                                            className="mr-2" variant="info"
+                                            onClick={()=>this.setState({editModalShow:true,facid : val && val.FACILITYID,facname: val && val.FACILITYNAME,locid: val && val.LOCATIONID})}
+                                            > Edit </Button>
+
+                                            <Button
+                                            className="mr-2" 
+                                            onClick={()=>this.deleteFac(val && val.FACILITYID)} 
+                                            variant="danger">Delete</Button>
+                                            <EditFacModel
+                                                show={this.state.editModalShow}
+                                                onHide={editModalClose}
+                                                facid={facid}
+                                                facname={facname}
+                                                facenable={facenable}
+                                                locid={locid}
+                                            />
+                                        </ButtonToolbar>
+                                    </td>
+                                           
+                                        </tr>
+                                        </tbody>
+                            </Table>
+                        )
+                          })
+                   }
+                        <br></br>
+                     
+                    
+                          
+                         
+                 
+                 
+                 
                             <br></br>
           
                             <Table >

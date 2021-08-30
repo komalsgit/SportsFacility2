@@ -18,6 +18,7 @@ class FacilityModifier extends Component {
             numberOfEquipments: 2,
             searchTerm:'',
             searchTerm1:'',
+            searchTerm2:'',
              };
         this.state = { sports: [], equipments: [], locs: [],sportse:[], addSModalShow: false, editSModalShow: false, addPModalShow: false }
       //  this.state = { value: 'Kolkata' };
@@ -169,57 +170,41 @@ class FacilityModifier extends Component {
                         <br></br>
                         <h2 class="h2">Sport Management</h2>
                         <br></br>
-                     
-                    
-                           Sport Name : <input type ="text" placeholder="Search..."
-                            onChange={(event)=> {
-                                this.setState({searchTerm1 : event.target.value})
-                            }}
-                            /> 
-                            <br></br>
-                           <Table>
-                            <thead>
+                        Sport Name :<input type ="text" placeholder="Search..."
+                      onChange={(event)=> {
+                          this.setState({searchTerm1 : event.target.value})
+                      }}
+                      /> 
+                 
+                          { sports && sports.filter((val) => {
+                           if (val && val.SPORTNAME.includes(this.state.searchTerm1)){
+                             return val             
+                         }
+                           else if(this.state.searchTerm1 == "") {
+                             return 0
+                           }
+                            })
+                      .map((val,key) =>{
+                          return (
+                                <Table>
+                                <thead>
                                 <tr>
-                                   
+                                    <th>Facility</th>
                                     <th>SportName</th>
                                     <th>Equipments</th>
                                     <th>Slots</th>
-                                    <th>Facility</th>
                                     <th>Location</th>
-                                   
                                 </tr>
-                                </thead>
-                                </Table>
-                                 { sports && sports.filter((val) => {
-                          if (val && val.SPORTNAME.includes(this.state.searchTerm1)){
-                                return val
-                            }
-                            else if(this.state.searchTerm1 == "") {
-                                return null
-                                }
-                                else {
-                                    return null
-                                }
-      })
-                        .map((val,key) => {
-                            return (
-                                <Table>
-                                     <thead>
-                                <tr>
+                            </thead>
+                            <tbody>
+                            <tr key={key}>
                                     
-                                    
-                                   
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr key={key}>
-                               
-                                <td>{val && val.SPORTNAME}</td>
-                                <td>{val && val.EQUIPMENTNAME}</td>
-                                <td>{val && val.TIMESLOT}</td>
-                                <td>{val && val.FACILITYNAME}</td>
-                                <td>{val && val.LOCATIONNAME}</td>
-                                <td>
+                                        <td>{val && val.FACILITYNAME}</td>
+                                        <td>{val && val.SPORTNAME}</td>
+                                        <td>{val && val.EQUIPMENTNAME}</td>
+                                        <td>{val && val.TIMESLOT}</td>
+                                        <td>{val && val.LOCATIONNAME}</td>
+                                        <td>
                                             <ButtonToolbar>
                                                 <Button
                                                     className="mr-2" variant="info"
@@ -241,10 +226,16 @@ class FacilityModifier extends Component {
                                                 />
                                             </ButtonToolbar>
                                         </td>
-                                </tr>
-                             </tbody>
-                          </Table>
-          )} )}
+                                        </tr>
+                                        </tbody>
+                            </Table>
+                        )
+                          })
+                   }
+                        <br></br>
+                     
+                    
+                          
                          
                  
                  
@@ -376,6 +367,50 @@ class FacilityModifier extends Component {
                             />
                         </ButtonToolbar>
                         <br />
+                        Sport :<input type ="text" placeholder="Search..."
+                      onChange={(event)=> {
+                          this.setState({searchTerm2 : event.target.value})
+                      }}
+                      /> 
+                 
+                          { sports && sports.filter((val) => {
+                           if (val && val.SPORTNAME.includes(this.state.searchTerm2)){
+                             return val
+                         }
+                           else if(this.state.searchTerm2 == "") {
+                             return 0
+                           }
+                            })
+                      .map((val,key) =>{
+                          return (
+                                <Table>
+                                <thead>
+                                <tr>
+                                    <th>EquipmentName</th>
+                                    <th>SportName</th>
+                                     <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <tr key={key}>
+                                    
+                                        <td>{val && val.EQUIPMENTNAME}</td>
+                                        <td>{val && val.SPORTNAME}</td>
+                                        <td>
+                                            <ButtonToolbar>
+                                                   <Button
+                                                    className="mr-2"
+                                                    onClick={() => this.deleteFac(val && val.EQUIPMENTID)}
+                                                    variant="danger">Delete</Button>
+                                            </ButtonToolbar>
+                                        </td>
+                                        </tr>
+                                        </tbody>
+                            </Table>
+                        )
+                          })
+                   }
+                        <br></br>
                         <Table>
                             <thead>
                                 <tr>
