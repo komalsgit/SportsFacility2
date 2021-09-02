@@ -56,6 +56,11 @@
     position: relative;
    
   }
+  .h3{
+    text-align: center;
+    background-color: rgb(11, 226, 126);
+    position: relative;
+  }
   .p{
   text-align :left;
   }
@@ -87,6 +92,16 @@
   }
   .btn2{
     text-align: center;
+  }
+  
+  .blackButton{
+    background-color: rgb(57, 113, 218);
+    color: white;
+  }
+  
+  .whiteButton{
+    background-color: white;
+    color: black;
   }
   
   

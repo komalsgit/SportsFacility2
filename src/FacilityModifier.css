@@ -53,6 +53,12 @@
     position: relative;
    
   }
+  .h3{
+    text-align: center;
+    background-color: rgb(158, 255, 210);
+    position: relative;
+   
+  }
   .p{
   text-align :left;
   }
@@ -84,6 +90,48 @@
   }
   .btn2{
     text-align: center;
+  }
+  .blackButton{
+    background-color: rgb(57, 113, 218);
+    color: white;
+  }
+  .button{
+    background-color: rgb(57, 113, 218);
+    color: white;
+  }
+  
+  .whiteButton{
+    background-color: white;
+    color: black;
+  }
+  .container {
+    position: absolute;
+    display: inline-block;
+   
+  }
+  
+  .dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 300px;
+    z-index: 2;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14);
+  }
+  
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  li {
+    padding: 8px 12px;
+  }
+  
+  li:hover {
+    background-color: rgba(0, 0, 0, 0.14);
+    cursor: pointer;
   }
   
   

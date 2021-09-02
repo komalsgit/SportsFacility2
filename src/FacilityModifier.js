@@ -7,6 +7,7 @@ import { Table, Button, ButtonToolbar } from 'react-bootstrap';
 //import FacilityOverview from './FacilityOverview';
 import { EditTimeSlot } from './EditTimeSlot';
 import { AddEquipmentModel } from './AddEquipmentModel';
+import { Redirect } from 'react-router-dom';
 
 
 
@@ -20,17 +21,31 @@ class FacilityModifier extends Component {
             searchTerm1:'',
             searchTerm2:'',
              };
+             this.state = { redirect: null, };
         this.state = { sports: [], equipments: [], locs: [],sportse:[], addSModalShow: false, editSModalShow: false, addPModalShow: false }
+        this.container = React.createRef();
+        this.state = { open: false,
+          };
+          this.handleButtonClick = () => {
+            this.setState((state) => {
+              return {
+                open: !state.open,
+              };
+            });
+        }
       //  this.state = { value: 'Kolkata' };
       //  this.state = { value: 'ABCPune' };
       //  this.state = { value: '9AM-10AM' };
 
         this.handleInputChange = this.handleInputChange.bind(this);
         this.state = { value: 'football' };
-
+        this.state = {black: true};
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
+    changeColor(){
+        this.setState({black: !this.state.black})
+     }
     componentDidMount() {
         this.refreshList();
         fetch('https://localhost:44345/api/Locationss')
@@ -39,7 +54,24 @@ class FacilityModifier extends Component {
             this.setState({ locs: response && response });
         }
         )
+        document.addEventListener("mousedown", this.handleClickOutside);
     }
+   // componentDidMount() {
+     //   document.addEventListener("mousedown", this.handleClickOutside);
+   // }
+    componentWillUnmount() {
+      document.removeEventListener("mousedown", this.handleClickOutside);
+    }
+    handleClickOutside = (event) => {
+        if (
+          this.container.current &&
+          !this.container.current.contains(event.target)
+        ) {
+          this.setState({
+            open: false,
+          });
+        }
+      };
    // componentDidMount() {
       //  fetch('https://localhost:44345/api/Locationss')
           //  .then(response => response && response.json())
@@ -96,12 +128,15 @@ class FacilityModifier extends Component {
   
 
     render() {
+        if (this.state.redirect) {
+            return <Redirect to={this.state.redirect} />
+          }
        
         const { sports,equipments, locs, slotname, sportid,slotid} = this.state;
         let addSModalClose = () => this.setState({ addSModalShow: false });
         let editSModalClose = () => this.setState({ editSModalShow: false });
         let addPModalClose = () => this.setState({ addPModalShow: false });
-
+        let btn_class = this.state.black ? "blackButton" : "whiteButton";
       
              return (
           
@@ -110,13 +145,24 @@ class FacilityModifier extends Component {
                <form >
                     <div>
                         <h1 class="wrapper">ABC Sports Facility</h1>
-
-                        <div class="tab">
-                            <button > <a href="UserManagement">User Management</a></button>
-                            <button><a href="admin/FacilityModifier">Admin</a></button>
-                            <button><a href="Home">Home/Booking</a></button>
+                         <div class="tab">
+                        <div  className="container" ref={this.container}>
+                            <button onClick={()=>this.setState({redirect:"/UserManagement"})}> <a href="UserManagement">User Management</a></button>
+                            <button type="button" class="button" onClick={this.handleButtonClick}
+                        >Admin ☰</button>
+                         <button  onClick={()=>this.setState({redirect:"/Home"})}><a href="Home">Home/Booking</a></button>
+                          {this.state.open && (
+                        <div class="dropdown">
+    <ul>
+      <li><a href="FacilityOverview">FacilityOverview</a></li>
+      <li><a href="FacilityModifier">FacilityModifier</a></li>
+    </ul>
+  </div>
+     )}               
                         </div>
                     </div>
+                    </div>
+                    <br></br>
                     <br></br>
                     <br></br>
                     <label class="lbl1">
@@ -131,46 +177,10 @@ class FacilityModifier extends Component {
                     <br></br>
 
                     <form onSubmit={this.handleSubmit}>
-                        <table><tr>
-                            <th> Facility Name : </th>
-                            <td>
-                                <label class="lbl2">
-
-                                    <select value={this.state.value} onChange={this.handleChange}>
-                                        <option value="ABCPune">ABCPune</option>
-                                        <option value="PQRMumbai">PQRMumbai</option>
-                                        <option value="OPSDelhi">OPSDelhi</option>
-                                        <option value="BWKolkata">BWKolkata</option>
-                                    </select>
-                                </label>
-                                <br />               </td>
-                        </tr>
-                            <tr>
-                                <th>Address</th>
-                                <td>Chennai</td>
-
-                            </tr>
-
-                            <tr>
-                                <th>Location</th>
-                                <td>ABC Chennai</td>
-                            </tr>
-                            <tr>
-                                <th>Bookings Enabled:</th>
-                                <td>
-                                    <label class="lbl2">
-                                        <input
-                                            name="isAvailable"
-                                            type="checkbox"
-                                        />
-                                    </label>
-                                </td>
-                            </tr>
-                        </table>
+                         <br></br>
+                        <h3 class="h3">Sport Management</h3>
                         <br></br>
-                        <h2 class="h2">Sport Management</h2>
-                        <br></br>
-                        Sport Name :<input type ="text" placeholder="Search..."
+                        Sport Name :<input type ="text" 
                       onChange={(event)=> {
                           this.setState({searchTerm1 : event.target.value})
                       }}
@@ -233,6 +243,7 @@ class FacilityModifier extends Component {
                           })
                    }
                         <br></br>
+                        <br></br>
                      
                     
                           
@@ -242,7 +253,7 @@ class FacilityModifier extends Component {
                  
                  
                  
-                      Facility Name :<input type ="text" placeholder="Search..."
+                      Facility Name :<input type ="text"
                       onChange={(event)=> {
                           this.setState({searchTerm : event.target.value})
                       }}
@@ -304,56 +315,8 @@ class FacilityModifier extends Component {
                         )
                           })
                    }
-                            <Table>
-                        <thead>
-                                <tr>
-                                    <th>SportId</th>
-                                    <th>SportName</th>
-                                    <th>Equipments</th>
-                                    <th>Slots</th>
-                                    <th>Facility</th>
-                                    <th>Location</th>
-                                    <th>Actions</th>
-
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {sports && sports.map(sport =>
-                                    <tr key={sport.SPORTID && sport.SPORTID}>
-
-                                        <td>{sport && sport.SPORTID}</td>
-                                        <td>{sport && sport.SPORTNAME}</td>
-                                        <td>{sport && sport.EQUIPMENTNAME}</td>
-                                        <td>{sport && sport.TIMESLOT}</td>
-
-
-                                        <td type="hidden">{sport && sport.FACILITYNAME}</td>
-                                        <td type="hidden">{sport && sport.LOCATIONNAME}</td>
-                                        <td>
-                                            <ButtonToolbar>
-                                                <Button
-                                                    className="mr-2" variant="info"
-                                                    onClick={() => this.setState({ editSModalShow: true, slotid: sport && sport.TIMESLOTID, slotname: sport && sport.TIMESLOT, sportid: sport && sport.SPORTSID })}
-                                                >Edit  </Button>
-
-
-                                                <Button
-                                                    className="mr-2"
-                                                    onClick={() => this.deleteFac(sport && sport.SPORTID)}
-                                                    variant="danger">Delete</Button>
-                                                <EditTimeSlot
-                                                    show={this.state.editSModalShow}
-                                                    onHide={editSModalClose}
-                                                    slotid={slotid}
-                                                    slotname={slotname}
-                                                    sportid={sportid}
-
-                                                />
-                                            </ButtonToolbar>
-                                        </td>
-                                    </tr>)}
-                            </tbody>
-                        </Table>
+                   
+                           
                          <br />
                             <ButtonToolbar>
                             <Button
@@ -366,8 +329,11 @@ class FacilityModifier extends Component {
                                 onHide={addSModalClose}
                             />
                         </ButtonToolbar>
+
+                        <br></br>
+                        <h3 class="h3">Equipments Management</h3>
                         <br />
-                        Sport :<input type ="text" placeholder="Search..."
+                        Sport :<input type ="text" 
                       onChange={(event)=> {
                           this.setState({searchTerm2 : event.target.value})
                       }}
@@ -411,32 +377,7 @@ class FacilityModifier extends Component {
                           })
                    }
                         <br></br>
-                        <Table>
-                            <thead>
-                                <tr>
-                                    <th>EquipmentName</th>
-                                    <th>SportName</th>
-                                     <th>Actions</th>
-
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {equipments && equipments.map(eq =>
-                                    <tr key={eq.EQUIPMENTID && eq.EQUIPMENTID}>
-
-                                        <td>{eq && eq.EQUIPMENTNAME}</td>
-                                      <th>{eq && eq.SPORTNAME}</th>
-                                        <td>
-                                            <ButtonToolbar>
-                                                   <Button
-                                                    className="mr-2"
-                                                    onClick={() => this.deleteFac(eq && eq.EQUIPMENTID)}
-                                                    variant="danger">Delete</Button>
-                                            </ButtonToolbar>
-                                        </td>
-                                    </tr>)}
-                            </tbody>
-                        </Table>
+                        
 
                         <ButtonToolbar>
                             <Button
@@ -453,45 +394,7 @@ class FacilityModifier extends Component {
                         <br />
 
                         <br></br>
-                        <h2 class="h2">Booking Management</h2>
-                        <br></br>
-                        <div>
-                            <p class="p">Enter Date: <DatePickerComponent></DatePickerComponent></p>
-                            <br />
-                            <br></br>
-                            <label class="lbl3">
-                                Select Sport:
-                                <select value={this.state.value} onChange={this.handleChange}>
-                                    <option value="football">football</option>
-                                    <option value="BasketBall">BasketBall</option>
-                                    <option value="BaseBall">BaseBall</option>
-                                    <option value="Tennis">Tennis</option>
-                                </select>
-                            </label>
-                        </div>
-                        <br></br>
-                        <br />
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Slots</th>
-                                    <th>9AM-10AM</th>
-                                    <th>10AM-11AM</th>
-                                    <th>11AM-12PM</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                                <tr>
-                                    <th>Status</th>
-                                    <td>Booked</td>
-                                    <td>Booked</td>
-                                    <td><button onClick="myFunction()"><a href="/Home">Available</a></button></td>
-                                </tr>
-
-
-                            </tbody>
-                        </table>
+                       
                        
 
                     </form>

@@ -59,18 +59,8 @@ export class AddBookModal extends Component{
          handleSubmit(event) {
     
             event.preventDefault();
-            alert(this.state.EVENTDATE);
-            alert(this.state.LOCATIONID);
-            alert(this.state.FACILITYID);
-            alert(this.state.SPORTSID);
-            alert(this.state.EQUIPMENTID);
-            alert(this.state.TIMESLOTID);
-            alert(this.state.BOOKINGSTATUSID);
-            alert(this.state.USERID);
- 
-            
-        
-            fetch ('https://localhost:44345/api/TimeslotBookings/',{
+           
+           fetch ('https://localhost:44345/api/TimeslotBookings/',{
                method: 'POST',
                 headers:{
                     'Accept':'application/json',
@@ -115,18 +105,25 @@ export class AddBookModal extends Component{
             //  this.setState({ sportss: data })
            // });
            // }
+        //  handleone(){
+         //   (ddl =>this.setState({LOCATIONID:ddl.target.value}))
+        //  }
      
   
        
-      //  handleAlternate1(event) {
-       //   event.preventDefault();
-        //  fetch(`https://localhost:44345/api/FacilityfromLocation?LOCATIONID=${this.state.LOCATIONID}`)
-         //   .then(response => response.json())
+      //  handleAlternate1() {
+         // event.preventDefault();
+         //// fetch(`https://localhost:44345/api/FacilityfromLocation?LOCATIONID=${this.state.LOCATIONID}`)
+           //.then(response => response.json())
            // .then(data => {
-             // this.setState({ facies: data })
+            // this.setState({ facies: data })
           //  });
            
-      //  }
+    //   }
+       // twocalls = e => {
+       //   e.handleone()
+        // e.handleAlternate1()
+       // }
       // handleAlternate2(event) {
         //  event.preventDefault();
          // fetch(`https://localhost:44345/api/EquipmentfromSport?SPORTSID=${this.state.SPORTSID}`)
@@ -169,7 +166,7 @@ export class AddBookModal extends Component{
             <Modal
           {...this.props}
             size="lg"
-           
+          
             aria-labelledby="contained-modal-title-vcenter"
             centered
           >
@@ -178,14 +175,17 @@ export class AddBookModal extends Component{
                Add Booking
               </Modal.Title>
             </Modal.Header>
-            <Modal.Body>
+            <Modal.Body className="show-grid">
            
             <Row>
-                <Col sm={6}>
+             
+                <Col sm={6} >
                 <Form  onSubmit={this.handleSubmit}> 
-                 <br></br>
+                  <Row class="row">
+                 <Col  xs={2} md={6} class="col">
                     <Form.Label>Location</Form.Label>
-                    <Form.Control as="select" onChange={(ddl=>this.setState({LOCATIONID:ddl.target.value}))} controlId="locDropdown" >
+                    <Form.Control as="select" onChange={(ddl=>this.setState({LOCATIONID:ddl.target.value}))}
+                     controlId="locDropdown" >
                       {
                         this.state.locations.map(location=>
                           <option  value={location.LOCATIONID} >{location.LOCATIONNAME}</option>
@@ -193,8 +193,9 @@ export class AddBookModal extends Component{
                       }
                       
                     </Form.Control>
-
-                    <br></br>
+                  
+                   <br></br>
+                   
                     <Form.Group>
                       <Button  variant="secondary" onClick={() =>  fetch(`https://localhost:44345/api/FacilityfromLocation?LOCATIONID=${this.state.LOCATIONID}`)
             .then(response => response.json())
@@ -202,9 +203,12 @@ export class AddBookModal extends Component{
               this.setState({ facies: data })
             })} >Add</Button>
                       </Form.Group>
-                    <br></br>
+                      </Col>
+                     
+                   <br></br>
+                  
 
-
+                    <Col xs={2} md={6} class="col">
                     <Form.Label>Facility</Form.Label>
                     <Form.Control as="select" onChange={(ddl=>this.setState({FACILITYID:ddl.target.value}))} controlId="FacisDropdown" >
                       {
@@ -216,6 +220,7 @@ export class AddBookModal extends Component{
 
 
                     <br></br>
+                 
                        <Form.Group>
                       <Button  variant="secondary" onClick={()=> fetch(`https://localhost:44345/api/SportfromFacility?FACILITYID=${this.state.FACILITYID}`)
             .then(response => response.json())
@@ -223,9 +228,11 @@ export class AddBookModal extends Component{
               this.setState({ sportss: data })
             })}>Add</Button>
                       </Form.Group>
+                      </Col>
+                    
                     <br></br>
 
-
+                    <Col xs={2} md={6} class="col">
                     <Form.Label>Sports</Form.Label>
                    <Form.Control as="select" onChange={(ddl=>this.setState({SPORTSID:ddl.target.value}))} controlId="SPDropdown" >
                       {
@@ -243,9 +250,10 @@ export class AddBookModal extends Component{
                this.setState({ equips: data })
             })} >Add</Button>
                       </Form.Group>
-
-
+                      </Col>
+                     
                     <br></br>
+                    <Col xs={2} md={6} class="col">
                     <Form.Label>Equipments</Form.Label>
                     <Form.Control as="select" onChange={(ddl=>this.setState({EQUPMENTID:ddl.target.value}))} controlId="SPDropdown" >
                       {
@@ -255,8 +263,10 @@ export class AddBookModal extends Component{
                       }
                       
                     </Form.Control>
+                    </Col>
 
                     <br></br>
+                    <Col xs={2} md={6} class="col">
                     <Form.Label>TimeSlots</Form.Label>
                     <Form.Control as="select" onChange={(ddl=>this.setState({TIMESLOTID:ddl.target.value}))} controlId="SlotsDropdown" >
                       {
@@ -265,8 +275,11 @@ export class AddBookModal extends Component{
                           )
                       }
                       
-                    </Form.Control>   
+                    </Form.Control>  
+                    </Col> 
+                   
                     <br></br>
+                    <Col xs={2} md={6} class="col">
                     <Form.Label> Booking Status</Form.Label>
                     <Form.Control as="select" onChange={(ddl=>this.setState({BOOKINGSTATUSID:ddl.target.value}))} controlId="bookingstatusDropdown" >
                       {
@@ -276,7 +289,9 @@ export class AddBookModal extends Component{
                       }
                       
                     </Form.Control>
+                    </Col>
                     <br></br>
+                    <Col xs={6} md={8} class="col">
                     <Form.Label>User</Form.Label>
                     <Form.Control as="select" onChange={(ddl=>this.setState({USERID:ddl.target.value}))} controlid="userDropdown" >
                       {
@@ -286,7 +301,10 @@ export class AddBookModal extends Component{
                       }
                       
                     </Form.Control>
+                    </Col>
                     <br></br>
+                    <br></br>
+                    <Col xs={6} md={8} class="col">
                     <Form.Group controlId="EVENTDATE">
                      <Form.Label> Event Date</Form.Label>
                      <Form.Control
@@ -297,8 +315,10 @@ export class AddBookModal extends Component{
                      placeholder="Date"
                      />
                      </Form.Group>
-                   
+                   </Col>
                     <br></br>
+                    <br></br>
+                    <Col xs={6} md={8} class="col">
                     <Form.Group controlId="CREATEDDATE">
                      <Form.Label> Booking Date</Form.Label>
                      <Form.Control
@@ -309,13 +329,14 @@ export class AddBookModal extends Component{
                      placeholder="Date"
                      />
                      </Form.Group>
-                   
+                   </Col>
+                   </Row>
                  <br></br>
                 <Form.Group>
                 <Button type="submit">Submit</Button>
                 </Form.Group>
                 </Form>
-                </Col>
+               </Col>
             </Row>
 			 
        

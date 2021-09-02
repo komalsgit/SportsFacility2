@@ -13,6 +13,10 @@ import FacilityModifier from './FacilityModifier';
 import Login from './Login';
 import FacilityOverview from './FacilityOverview';
 import AddFacility from './AddFacility';
+import App1 from './App1';
+import LoginForm from './components/LoginForm/LoginForm';
+import RegistrationForm from './components/RegistrationForm/RegistrationForm';
+import Login2 from './Login2';
 
 class App extends Component {
   render(){
@@ -20,11 +24,14 @@ class App extends Component {
       <div className="App">
         <Switch>
           <Route exact path="/" component={Form} />
+          <Route path="/Login" component={App1}/>
+          <Route path="/Registration" component={RegistrationForm}/>
           <Route path="/usermanagement" component={UserManagement} />
           <Route path="/home" component={Home} />
           <Route path="/admin/facilitymodifier" component={FacilityModifier} />
           <Route path="/admin" component={FacilityOverview} />
-          <Route path="/login" component={Login} />
+          <Route path="/login" component={LoginForm} />
+          <Route path="/login/home" component={Home} />
           <Route path="/admin/facilityoverview" component={FacilityOverview} />
           <Route path="/admin/addfacility" component={AddFacility} />
           <Route path="/admin/usermanagement" component={UserManagement} />
@@ -32,6 +39,8 @@ class App extends Component {
           <Route path="/home/usermanagement" component={UserManagement} />
           <Route path="/addsport" component={Form} />
           <Route path="/addfacility" component={AddFacility} />
+          <Route path="/login2" component={Login2} />
+          <Route path="/login2/home" component={Home} />
         </Switch>
         
       </div>

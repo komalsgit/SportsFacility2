@@ -3,9 +3,10 @@ import "./App.css";
 
 import './FacilityOverview.css';
 //import { Button } from '@syncfusion/ej2-buttons';
-import { Table,Button,ButtonToolbar} from 'react-bootstrap';
+import { Table,Button,ButtonToolbar,Form} from 'react-bootstrap';
 import { AddFacModel } from './AddFacModel';
 import { EditFacModel } from './EditFacModel';
+import { Redirect } from 'react-router-dom';
 
   class FacilityOverview extends Component {
                
@@ -17,10 +18,22 @@ import { EditFacModel } from './EditFacModel';
                     searchTerm1:'',
                   
                 };
-                this.state={facs:[],locs:[], addModalShow : false,editModalShow : false}
-                this.state = { value: 'Kolkata' };
-                this.state = { value: 'ABCPune' };
-                this.state = { value: '9AM-10AM' };
+                this.state={facs:[],locs:[],books:[], addModalShow : false,editModalShow : false}
+               // this.state = { value: 'Kolkata' };
+               // this.state = { value: 'ABCPune' };
+               // this.state = { value: '9AM-10AM' };
+               this.state = { redirect: null, };
+                this.state = { searchTerm3:'',};
+                this.container = React.createRef();
+                this.state = { open: false,
+                  };
+                  this.handleButtonClick = () => {
+                    this.setState((state) => {
+                      return {
+                        open: !state.open,
+                      };
+                    });
+                }
 
                 this.handleInputChange = this.handleInputChange.bind(this);
                 this.state = { value: 'football' };
@@ -37,11 +50,34 @@ import { EditFacModel } from './EditFacModel';
                  this.setState({locs: response && response});
              }
              )
+             document.addEventListener("mousedown", this.handleClickOutside);
           }
+          componentWillUnmount() {
+            document.removeEventListener("mousedown", this.handleClickOutside);
+          }
+          handleClickOutside = (event) => {
+            if (
+              this.container.current &&
+              !this.container.current.contains(event.target)
+            ) {
+              this.setState({
+                open: false,
+              });
+            }
+          };
        
                 handleChange(event) {
                 this.setState({ value: event.target.value });
             }
+        //      handleAlternate(event) {
+          //        event.preventDefault();
+          //  fetch(`https://localhost:44345/api/BookingBasedonId?BOOKINGSID=${event.target.BOOKINGSID.value}`)
+             //       .then(response => response.json())
+             // .then(data => {
+              //      this.setState({ books: data })
+               //   });
+                 //  }
+             
 
             handleSubmit(event) {
                 alert('Your Location: ' + this.state.value);
@@ -67,6 +103,11 @@ import { EditFacModel } from './EditFacModel';
               this.setState({facs: response && response });
                
                 })
+                fetch('https://localhost:44345/api/TimeslotBookings')
+                .then(response => response && response.json())
+                .then(response => {
+                    this.setState({ books: response && response });
+                })
                 
            }
            componentDidUpdate(){
@@ -88,7 +129,10 @@ import { EditFacModel } from './EditFacModel';
 
          
          render() {
-             const {facs,locs,facid,facenable,facname,locid} = this.state;
+            if (this.state.redirect) {
+                return <Redirect to={this.state.redirect} />
+              }
+             const {facs,locs,books,facid,facenable,facname,locid} = this.state;
              let addModalClose =() => this.setState({addModalShow : false});
              let editModalClose =() => this.setState({editModalShow : false});
              
@@ -105,12 +149,29 @@ import { EditFacModel } from './EditFacModel';
                                 <h1 class="wrapper">ABC Sports Facility</h1>
 
                                 <div class="tab">
-                                    <button > <a href="/UserManagement">User Management</a></button>
-                                    <button><a href="/Admin/FacilityModifier">Admin</a></button>
-                                    <button><a href="/Home">Home/Booking</a></button>
-                                </div>
-                            </div>
+                       
+                                <div  className="container" ref={this.container}>
+                            <button  onClick={()=>this.setState({redirect:"/UserManagement"})}> <a href="UserManagement">User Management</a></button>
+                            
+                            <button type="button" class="button" onClick={this.handleButtonClick}
+                        >Admin ☰</button>
+                         <button  onClick={()=>this.setState({redirect:"/Home"})}><a href="Home">Home/Booking</a></button>
+                          {this.state.open && (
+                        <div class="dropdown">
+    <ul>
+      <li><a href="FacilityOverview">FacilityOverview</a></li>
+      <li><a href="FacilityModifier">FacilityModifier</a></li>
+    </ul>
+  </div>
+     )}              
+                        </div>
+                       
+                    </div>
+                    </div>
+                   
+                    <br></br>
                             <br></br>
+                          
                             <label class="lbl1">
                                 Location:
                                
@@ -122,16 +183,9 @@ import { EditFacModel } from './EditFacModel';
                             <br></br>
                             <br></br>
                             <h2 class="h2">Facilities Overview</h2>
-                            <br></br>
-                            <div>
-                                <p class="p">
-                                    <label for="tags" class="p">Search Facility :  </label>
-                                    <input id="tags" autofocus placeholder=" Enter Facility Name" ></input>
-                                </p>
-                            </div>
                             <br />
                             <br></br>
-                            Location Name :<input type ="text" placeholder="Search..."
+                            Location :<input type ="text"
                       onChange={(event)=> {
                           this.setState({searchTerm1 : event.target.value})
                       }}
@@ -195,65 +249,8 @@ import { EditFacModel } from './EditFacModel';
                           })
                    }
                         <br></br>
-                     
-                    
-                          
-                         
-                 
-                 
-                 
-                            <br></br>
-          
-                            <Table >
-                                <thead>
-                                    <tr>
-                                         <th></th>
-                                         <th>FACILITYID</th>
-                                        <th>FACILITYNAME</th>
-                                        <th>LOCATION</th>
-                                        <th type="hidden"></th>
-                                        <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    { facs && facs.map(fac=>
-                                    <tr  key={fac.ID && fac.ID}>
-                                     <td>{fac && fac.ID}</td>
-                                    
-                                   <td>{fac && fac.FACILITYID}</td>
-                                   
-                                     <td>{fac && fac.FACILITYNAME}</td>
-                                   
-                                  <td>{fac && fac.LOCATIONNAME}</td>
-                                    <td type="hidden">{fac && fac.FACILITYENABLED}</td>
-                                    <td>
-                                        <ButtonToolbar>
-                                            <Button 
-                                            className="mr-2" variant="info"
-                                            onClick={()=>this.setState({editModalShow:true,facid :fac && fac.FACILITYID,facname: fac && fac.FACILITYNAME,locid: fac && fac.LOCATIONID})}
-                                            > Edit </Button>
-
-                                            <Button
-                                            className="mr-2" 
-                                            onClick={()=>this.deleteFac(fac && fac.FACILITYID)} 
-                                            variant="danger">Delete</Button>
-                                            <EditFacModel
-                                                show={this.state.editModalShow}
-                                                onHide={editModalClose}
-                                                facid={facid}
-                                                facname={facname}
-                                                facenable={facenable}
-                                                locid={locid}
-                                            />
-                                        </ButtonToolbar>
-                                    </td>
-                                   </tr>
-                                    )}  
-                                            
-                                  
-                                </tbody>
-                               </Table>
-                               <ButtonToolbar>
+                       <br></br>
+                                 <ButtonToolbar>
                                    <Button
                                     variant ='primary'
                                    onClick={()=> this.setState({addModalShow: true})}
@@ -265,19 +262,81 @@ import { EditFacModel } from './EditFacModel';
                                    />
 
                                </ButtonToolbar>
-                
-                  
-                    <br></br>
-                            <br />
                             <br></br>
                             <br></br>
-                            <h2 class="h2">Booking Preview</h2>
+                            <h3 class="h3">Booking Preview</h3>
                             <br></br>
 
                             <div>
-                                <p  >Enter Booking Id : <input type="text" autofocus placeholder=" Enter Booking Id"></input></p>
+                              
+                        Enter Booking Id : <input type ="number"
+                            onChange={(event)=> {
+                                this.setState({searchTerm3 : event.target.value})
+                            }}
+                            /> 
+                            <br></br>
+                           <Table>
+                            <thead>
+                                <tr>
+                                   
+                                    <th>Booking Id</th>
+                                    <th>Facility</th>
+                                    <th>Sport</th>
+                                    <th>Event Date</th>
+                                    <th>Booking Date</th>
+                                    <th>TimeSlot</th>
+                                    <th>Booking Status</th>
+                                    <th>Location</th>
+                                   
+                                </tr>
+                                </thead>
+                                </Table>
+                                 { books && books.filter((val) => {
+                          if ( val && val.BOOKINGSID == this.state.searchTerm3 ){
+                                return val
+                            }
+                            else if(this.state.searchTerm3 == null) {
+                                return 0
+                                }
+                                else {
+                                    return 0
+                                }
+      })
+                        .map((val,key) => {
+                            return (
+                                <Table>
+                                     <thead>
+                                <tr>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr key={key}>
+                               
+                                <td>{val && val.BOOKINGSID}</td>
+                                <td>{val && val.FACILITYNAME}</td>
+                                <td>{val && val.SPORTNAME}</td>
+                                <td>{val && val.EVENTDATE}</td>
+                                <td>{val && val.CREATEDDATE}</td>
+                                <td>{val && val.TIMESLOT}</td>
+                                <td>{val && val.BOOKINGSTATUS}</td>
+                                <td>{val && val.LOCATIONNAME}</td>
+                                <td>
+                                        <ButtonToolbar>
+                                            <Button
+                                                    className="mr-2"
+                                                    onClick={() => this.deleteBooking(val && val.BOOKINGSID)}
+                                                    variant="danger">Delete</Button>
+                                               
+                                            </ButtonToolbar>
+                                        </td>
+                                </tr>
+                             </tbody>
+                         
+                             </Table>
+          )} )}
+          
 
-                                <button><a href="/Home/Booking">Modify Booking</a></button>
+                                <Button ><a  className="btn btn-primary" href="/Home/Booking">Modify Booking</a></Button>
 
                             </div>
                             <br></br>

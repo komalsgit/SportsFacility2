@@ -43,5 +43,15 @@
 .App-link {
   color: #61dafb;
 }
+.blackButton{
+  background-color: rgb(57, 113, 218);
+  color: white;
+}
+
+.whiteButton{
+  background-color: white;
+  color: black;
+}
+
 
 
