@@ -38,7 +38,7 @@ class FacilityModifier extends Component {
       //  this.state = { value: '9AM-10AM' };
 
         this.handleInputChange = this.handleInputChange.bind(this);
-        this.state = { value: 'football' };
+       // this.state = { value: 'football' };
         this.state = {black: true};
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -144,18 +144,18 @@ class FacilityModifier extends Component {
             <form class="frm1">
                <form >
                     <div>
-                        <h1 class="wrapper">ABC Sports Facility</h1>
+                        <h1 class="wrapper"> ⚽⚾  ABC Sports Facility  🎾🏀</h1>
                          <div class="tab">
                         <div  className="container" ref={this.container}>
-                            <button onClick={()=>this.setState({redirect:"/UserManagement"})}> <a href="UserManagement">User Management</a></button>
+                            <button onClick={()=>this.setState({redirect:"/UserManagement"})}>💻 User Management</button>
                             <button type="button" class="button" onClick={this.handleButtonClick}
-                        >Admin ☰</button>
-                         <button  onClick={()=>this.setState({redirect:"/Home"})}><a href="Home">Home/Booking</a></button>
+                        > 👲Admin ☰</button>
+                         <button  onClick={()=>this.setState({redirect:"/Home"})}> ⛪Home/Booking</button>
                           {this.state.open && (
                         <div class="dropdown">
     <ul>
-      <li><a href="FacilityOverview">FacilityOverview</a></li>
-      <li><a href="FacilityModifier">FacilityModifier</a></li>
+      <li onClick={()=>this.setState({redirect:"/admin/facilityoverview"})}>FacilityOverview</li>
+      <li   className="loginText" onClick={()=>this.setState({redirect:"/admin/facilitymodifier"})}>FacilityModifier</li>
     </ul>
   </div>
      )}               
@@ -165,22 +165,14 @@ class FacilityModifier extends Component {
                     <br></br>
                     <br></br>
                     <br></br>
-                    <label class="lbl1">
-                        Location:
-                        <select>
-                            {locs && locs.map(loc => <option value={loc && loc.LOCATIONID}>{loc && loc.LOCATIONNAME}</option>)}
-                        </select>
-                    </label>
-                    <br></br>
-                    <br></br>
-                    <h2 class="h2">Facility Modifier</h2>
+                    <h2 class="h2"> ✦ FACILITY MODIFIER  ✦</h2>
                     <br></br>
 
                     <form onSubmit={this.handleSubmit}>
                          <br></br>
-                        <h3 class="h3">Sport Management</h3>
+                        <h3 class="h3">SPORTS MANAGEMENT</h3>
                         <br></br>
-                        Sport Name :<input type ="text" 
+                        ✦ Sport   :  <input type ="text" 
                       onChange={(event)=> {
                           this.setState({searchTerm1 : event.target.value})
                       }}
@@ -253,7 +245,7 @@ class FacilityModifier extends Component {
                  
                  
                  
-                      Facility Name :<input type ="text"
+                        ✦ Facility : <input type ="text"
                       onChange={(event)=> {
                           this.setState({searchTerm : event.target.value})
                       }}
@@ -331,15 +323,15 @@ class FacilityModifier extends Component {
                         </ButtonToolbar>
 
                         <br></br>
-                        <h3 class="h3">Equipments Management</h3>
+                        <h3 class="h3">EQUIPMENTS MANAGEMENT</h3>
                         <br />
-                        Sport :<input type ="text" 
+                        ✦ Sport : <input type ="text" 
                       onChange={(event)=> {
                           this.setState({searchTerm2 : event.target.value})
                       }}
                       /> 
                  
-                          { sports && sports.filter((val) => {
+                          { equipments && equipments.filter((val) => {
                            if (val && val.SPORTNAME.includes(this.state.searchTerm2)){
                              return val
                          }
@@ -395,7 +387,7 @@ class FacilityModifier extends Component {
 
                         <br></br>
                        
-                       
+                        <h4 class="h5">@ABC sports Facility</h4>
 
                     </form>
                 </form>

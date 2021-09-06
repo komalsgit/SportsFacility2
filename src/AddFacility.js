@@ -27,7 +27,7 @@ class AddFacility extends Component {
 	
 	  handleSubmit(event) {
 	///////	alert('submit: ' + this.state.value);
-		alert(this.state.value);
+	//	alert(this.state.value);
 		event.preventDefault();
 	//////	alert(event.target.FACILITYENABLED.value);
 		
@@ -54,10 +54,10 @@ class AddFacility extends Component {
 		.then(res => res.json())
 			.then((res)=>
 			{
-				alert(res );
+			//	alert(res );
 			},
 			(error)=>{
-				alert('Failed')
+				//alert('Failed')
 				//.catch(error => {
 					//throw error;
 			}

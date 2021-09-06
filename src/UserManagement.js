@@ -98,7 +98,7 @@ componentDidUpdate() {
       }
   }
   render() {
-    const {locs,roles,roleid,roleenable,rolename} = this.state;
+    const {locs,roles,userid,emid,locsid,pwd,roleid,roleenable,rolename} = this.state;
     let addModalClose =() => this.setState({addModalShow : false});
     let editModalClose =() => this.setState({editModalShow : false});
     let btn_class = this.state.black ? "blackButton" : "whiteButton";
@@ -107,30 +107,31 @@ componentDidUpdate() {
     return (
       <form class="frm1">
         <div>
-          <h1 class="wrapper">ABC Sports Facility</h1>
+          <h1 class="wrapper"> ⚽⚾  ABC Sports Facility  🎾🏀</h1>
+
           <div class="tab">
+
+          <div  className="container" ref={this.container}>
             <button  className={btn_class}
-                         onClick={this.changeColor.bind(this)}><a href="UserManagement"></a>UserManagement</button>
-            <button><a href ="admin/FacilityModifier">Admin</a></button>
-            <button><a href="Home/Booking">Home/Booking</a></button>
+                         onClick={this.changeColor.bind(this)}><a href="UserManagement"></a>💻UserManagement</button>
+            <button><a href ="admin/FacilityModifier">👲Admin</a></button>
+            <button><a href="Home/Booking">⛪Home/Booking</a></button>
+          </div>
           </div>
           <br></br>
-          <label class="lbl1"> Location:
-                               <select>
-                                  { locs && locs.map(loc => <option value={loc && loc.LOCATIONID}>{ loc && loc.LOCATIONNAME}</option>)}
-                                </select>
-                            </label>
-          <br></br>
+      
+          
           <br></br>
          
-            <h2 class="h2">User Roles</h2>
+            <h2 class="h2"> ✦ USER MANAGEMENT ✦ </h2>
 
          
-
-        </div>
+            </div>
+            <br></br>
+      
 
        
-        Location  : <input type ="text" 
+            ✦ Location  : <input type ="text" 
                             onChange={(event)=> {
                                 this.setState({searchTerm1 : event.target.value})
                             }}
@@ -172,7 +173,7 @@ componentDidUpdate() {
                                         <ButtonToolbar>
                                         <Button 
                                             className="mr-2" variant="info"
-                                            onClick={()=>this.setState({editModalShow:true,roleid : val && val.USERID,rolename: val && val.UserRoleName,roleenable: val && val.ISACTIVE})}
+                                            onClick={()=>this.setState({editModalShow:true, userid:val && val.USERID,emid:val && val.EMAIL, pwd:val && val.USER_PWD,roleenable: val && val.ISACTIVE,roleid : val && val.UserRoleId, locsid: val && val.LOCATIONID})}
                                             > Edit </Button>
                                             <Button
                                                     className="mr-2"
@@ -181,9 +182,13 @@ componentDidUpdate() {
                                                      <EditRoleModal
                                                 show={this.state.editModalShow}
                                                 onHide={editModalClose}
-                                                roleid={roleid}
-                                                rolename={rolename}
+                                                userid={userid}
+                                                emid={emid}
+                                                pwd={pwd}
                                                 roleenable={roleenable}
+                                                roleid={roleid}
+                                                locsid={locsid}
+                                               
                                                
                                             />
                                                
@@ -195,18 +200,10 @@ componentDidUpdate() {
                              </Table>
           )} )}
             <br></br>
-                                 <ButtonToolbar>
-                                   <Button
-                                    variant ='primary'
-                                   onClick={()=> this.setState({addModalShow: true})}
-                                   >Add User
-                                   </Button>
-                                   <AddRoleModal
-                                       show={this.state.addModalShow}
-                                       onHide={addModalClose}
-                                   />
-
-                               </ButtonToolbar>
+            <br></br>
+            <br></br>
+            <br></br>
+            <h4 class="h5">@ABC sports Facility</h4>
 
       </form>
     );

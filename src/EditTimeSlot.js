@@ -18,7 +18,7 @@ export class EditTimeSlot extends Component{
         ///////	alert('submit: ' + this.state.value);
            // alert(this.state.value);
             event.preventDefault();
-        	alert(event.target.TIMESLOT.value);
+        	alert(event.target.TIMESLOT.value + " Timeslot is Edited !! ");
             
         
             fetch ('https://localhost:44345/api/TimeSlots/Putslot',{
@@ -138,7 +138,8 @@ export class EditTimeSlot extends Component{
                 
                  </Form.Group>
                  <Form.Group>
-                 <Button type="submit">Submit!</Button>
+                 <Button type="submit">Submit</Button>
+                 <Button  variant="danger"  onClick={this.props.onHide}>Close</Button>
                  </Form.Group>
                  </Form>
                  </Col>
@@ -147,8 +148,7 @@ export class EditTimeSlot extends Component{
         
              </Modal.Body>
              <Modal.Footer>
-            
-               <Button  variant="danger"  onClick={this.props.onHide}>Close</Button>
+             <span  className="loginText" variant="danger"  onClick={this.props.onHide}>X</span>
              </Modal.Footer>
              </Modal>
              </div>

@@ -7,25 +7,18 @@ import IconButton from '@material-ui/core/IconButton';
 export class EditRoleModal extends Component{
     constructor(props){
         super(props);
-        this.state = {UserRoleId :"",roles:[],snackbaropen: false, snackbarmsg: ''};
+        this.state = {UserRoleId:"",roles:[],snackbaropen: false, snackbarmsg: ''};
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     snackbarClose = (event) =>{
         this.setState({snackbaropen:false});
      
       };
-      componentDidMount(){
-        fetch ('https://localhost:44345/api/UserRoleGet')
-        .then(response => response.json())
-        .then(data => {
-          this.setState({roles:data})
-        });
-       }
+     
       handleSubmit(event) {
-        ///////	alert('submit: ' + this.state.value);
-           // alert(this.state.value);
             event.preventDefault();
-        	//alert(this.state.UserRoleName.value);
+         //   alert(event.target.USERID.value)
+        //	alert(event.target.UserRoleId.value);
             
         
             fetch ('https://localhost:44345/api/UserRoleGet/Put',{
@@ -35,9 +28,15 @@ export class EditRoleModal extends Component{
                     'Content-Type':'application/json' 
                 },
                     body:JSON.stringify({
-                   UserRoleId:this.state.UserRoleId,
+                      USERID:event.target.USERID.value,
+                      EMAIL:event.target.EMAIL.value,
+                      USER_PWD:event.target.USER_PWD.value,
+                      ISACTIVE:event.target.ISACTIVE.value,
+                   UserRoleId:event.target.UserRoleId.value,
+                   LOCATIONID:event.target.LOCATIONID.value 
                   // UserRoleName:this.state.UserRoleName.value,
-                 // IsActive:1,
+                 
+                 
                    
     
                })
@@ -54,6 +53,13 @@ export class EditRoleModal extends Component{
                 }
                 )
         }
+        componentDidMount(){
+          fetch ('https://localhost:44345/api/UserRole')
+          .then(response => response.json())
+          .then(data => {
+            this.setState({roles:data})
+          });
+         }
         
       
         render() {
@@ -92,9 +98,27 @@ export class EditRoleModal extends Component{
              <Row>
                  <Col sm={6}>
                  <Form  onSubmit={this.handleSubmit}> 
-                
+                 <Form.Group controlId="USERID">
+                     <Form.Control
+                     type="hidden"
+                     name="USERID"
+                     required
+                     disabled
+                     defaultValue = {this.props.userid}
+                        />
+                 </Form.Group>
+                 <Form.Group controlId="EMAIL">
+                     <Form.Control
+                     type="hidden"
+                     name="EMAIL"
+                     required
+                     disabled
+                     defaultValue = {this.props.emid}
+                     />
+                 </Form.Group>
                  <Form.Label>UserRole</Form.Label>
-                    <Form.Control as="select" onChange={(ddl=>this.setState({UserRoleId:ddl.target.value}))} controlId="LocationDropdown" >
+                    <Form.Control  name="UserRoleId"as="select" onChange={(ddl => this.setState({UserRoleId:ddl.target.value}))}  
+                     defaultValue = {this.props.roleid} controlId="RoleDropdown" >
                       {
                         this.state.roles.map(location=>
                           <option  value={location.UserRoleId} >{location.UserRoleName}</option>
@@ -102,10 +126,39 @@ export class EditRoleModal extends Component{
                       }
                       
                     </Form.Control> 
-                
-                     
+                 <Form.Group controlId="USER_PWD">
+                     <Form.Control
+                     type="hidden"
+                     name="USER_PWD"
+                     required
+                     disabled
+                     defaultValue = {this.props.pwd}
+                     />
+                 </Form.Group>
+                 <Form.Group controlId="LOCATIONID">
+                     <Form.Control
+                     type="hidden"
+                     name="LOCATIONID"
+                     required
+                     disabled
+                     defaultValue = {this.props.locsid}
+                     />
+                 </Form.Group>
+                 <Form.Group controlId="ISACTIVE">
+                     <input
+                     type="hidden"
+                     name="ISACTIVE"
+                     disabled
+                     defaultValue = {this.props.roleenable}
+                    
+ 
+                     />
+                      </Form.Group>
+                      <br></br>
+
                  <Form.Group>
-                 <Button type="submit">Submit!</Button>
+                 <Button type="submit">Submit</Button>
+                 <Button  variant="danger"  onClick={this.props.onHide}>Cancel</Button>
                  </Form.Group>
                  </Form>
                  </Col>
@@ -115,7 +168,7 @@ export class EditRoleModal extends Component{
              </Modal.Body>
              <Modal.Footer>
             
-               <Button  variant="danger"  onClick={this.props.onHide}>Close</Button>
+               <span   color="blue"variant="danger"  onClick={this.props.onHide}>X</span>
              </Modal.Footer>
              </Modal>
              </div>

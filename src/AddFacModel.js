@@ -46,7 +46,7 @@ import IconButton from '@material-ui/core/IconButton';
         ///////	alert('submit: ' + this.state.value);
            // alert(this.state.value);
             event.preventDefault();
-        	alert(event.target.FACILITYNAME.value);
+        	alert(event.target.FACILITYNAME.value +"Facility is Added !!");
             
         
             fetch ('https://localhost:44345/api/Values/',{
@@ -143,7 +143,7 @@ import IconButton from '@material-ui/core/IconButton';
                     />
                     </Form.Group>
                     <Form.Label>Location</Form.Label>
-                    <Form.Control as="select" onChange={(ddl=>this.setState({LOCATIONID:ddl.target.value}))} controlId="LocationDropdown" >
+                    <Form.Control as="select" onChange={(ddl=>this.setState({LOCATIONID:ddl.target.value}))} >
                       {
                         this.state.locations.map(location=>
                           <option  value={location.LOCATIONID} >{location.LOCATIONNAME}</option>
@@ -185,7 +185,8 @@ import IconButton from '@material-ui/core/IconButton';
                
                <br></br>
                 <Form.Group>
-                <Button type="submit">Submit!</Button>
+                <Button type="submit">Submit</Button>
+                <Button variant="danger" onClick={this.props.onHide}>Cancel</Button>
                 </Form.Group>
                 </Form>
                 </Col>
@@ -195,7 +196,8 @@ import IconButton from '@material-ui/core/IconButton';
             </Modal.Body>
             <Modal.Footer>
            
-              <Button  variant="danger"  onClick={this.props.onHide}>Close</Button>
+             
+              <span  className="loginText" variant="danger"  onClick={this.props.onHide}>X</span>
             </Modal.Footer>
             </Modal>
             </div>

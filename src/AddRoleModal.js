@@ -3,22 +3,17 @@ import { Modal,Button,Row,Col,Form,} from 'react-bootstrap';
 
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
+import { Redirect } from 'react-router-dom';
 
   export class AddRoleModal extends Component{
    
     constructor(props){
         super(props);
-        this.state = { LOCATIONID:"",locations:[],UserRoleId:"",roles:[],USERID :"",users:[],snackbaropen: false, snackbarmsg: ''};
+        this.state = { LOCATIONID:"",locations:[],UserRoleId:"",roles:[],USERID :"",users:[],snackbaropen: false, snackbarmsg: '', redirect: null};
         this.handleSubmit = this.handleSubmit.bind(this);
-      
+       // this.state = { redirect: null };
         
-       // this.state = { value: 'Facility is Added Successfully' };
-       // this.state = {
-          //  isAvailable: true,
-          //  numberOfEquipments: 2,
-           // FACILITYNAME:this,
-            
-        // }
+      
        }
        componentDidMount(){
         fetch ('https://localhost:44345/api/Locationss')
@@ -26,17 +21,17 @@ import IconButton from '@material-ui/core/IconButton';
         .then(data => {
           this.setState({locations:data})
         });
-        fetch ('https://localhost:44345/api/UserRoleGet')
-        .then(response => response.json())
-        .then(data => {
-          this.setState({roles:data})
-        });
+     //   fetch ('https://localhost:44345/api/UserRoleGet')
+       // .then(response => response.json())
+       // .then(data => {
+        //  this.setState({roles:data})
+       // });
        }
       
          snackbarClose = (event) =>{
             this.setState({snackbaropen:false});
          // this.state = { value: 'Facility is Added Successfully' };
-          };
+         };
          
     
          // this.handleChange = this.handleChange.bind(this);
@@ -48,11 +43,11 @@ import IconButton from '@material-ui/core/IconButton';
          
         
          handleSubmit(event) {
-        ///////	alert('submit: ' + this.state.value);
-           // alert(this.state.value);
+        
             event.preventDefault();
-        	alert(event.target.EMAIL.value);
-            
+        //	alert(event.target.EMAIL.value);
+          if (event.target.USER_PWD.value == event.target.USER_PWD1.value)
+          {
         
             fetch ('https://localhost:44345/api/UserRoleGet/',{
                method: 'POST',
@@ -66,27 +61,51 @@ import IconButton from '@material-ui/core/IconButton';
                     USER_PWD:event.target.USER_PWD.value,
                     ISACTIVE:null,
                     LOCATIONID:this.state.LOCATIONID,
-                    UserRoleId:this.state.UserRoleId
+                    UserRoleId:1
                   
     
                })
             })
            .then(res => res.json())
                 .then((res)=>
-                {
+                { 
+                  if (
+                    res == "Success"
+                ){
+                     this.setState({redirect: "/Home" });
+                }else if(res == "failure"){
+                  event.preventDefault();
+                  alert("failure")
+                  //this.setState({ redirect:"/login2" })
+                }
                   // alert(res );
-                   this.setState({snackbaropen:true,snackbarmsg:res})
+                //  if (event.target.USER_PWD.value == event.target.USER_PWD1.value){
+                  //  this.setState({ redirect:"/Home" })
+                 // }
+                //  else if (event.target.USER_PWD.value == event.target.USER_PWD1.value){
+                   // this.setState({ redirect:"/login2" })
+                 // }
+                  this.setState({snackbaropen:true,snackbarmsg:res})
                },
                 (error)=>{
                   // alert('Failed')
+               //   this.setState({ redirect:"/login2" })
                    this.setState({snackbaropen:true,snackbarmsg:'failed'})
                 }
                 )
         }
-      
+      else  if (event.target.USER_PWD.value != event.target.USER_PWD1.value) {
+          alert("Password is not matching")
+          this.setState({ redirect:"/login2" })
+        }
+         }
+        
        
       
         render() {
+         if (this.state.redirect) {
+            return <Redirect to={this.state.redirect} />
+         }
         
         return(
             <div className="container" >
@@ -114,7 +133,7 @@ import IconButton from '@material-ui/core/IconButton';
           >
             <Modal.Header >
               <Modal.Title id="contained-modal-title-vcenter">
-               Add User
+              Register
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -130,13 +149,19 @@ import IconButton from '@material-ui/core/IconButton';
                     required
                      />
                     </Form.Group>
-                    <br></br>
-                   
-                <Form.Group controlid="USER_PWD">
+                    <Form.Group controlid="USER_PWD">
                     <Form.Label>Password</Form.Label>
                     <Form.Control
                     type="password"
                     name="USER_PWD"
+                    required
+                     />
+                    </Form.Group>
+                    <Form.Group controlid="USER_PWD1">
+                    <Form.Label> Confirm Password</Form.Label>
+                    <Form.Control
+                    type="password"
+                    name="USER_PWD1"
                     required
                      />
                     </Form.Group>
@@ -149,20 +174,7 @@ import IconButton from '@material-ui/core/IconButton';
                       }
                       
                     </Form.Control>
-                    <Form.Label>User Role</Form.Label>
-                    <Form.Control as="select" onChange={(ddl=>this.setState({UserRoleId:ddl.target.value}))} controlId="LocationDropdown" >
-                      {
-                        this.state.roles.map(location=>
-                          <option  value={location.UserRoleId} >{location.UserRoleName}</option>
-                          )
-                      }
-                      
-                    </Form.Control>
-                    
                    
-                    <br></br>
-                    
-               
           
                
                     
@@ -171,6 +183,7 @@ import IconButton from '@material-ui/core/IconButton';
                <br></br>
                 <Form.Group>
                 <Button type="submit">Submit!</Button>
+                <Button  variant="danger"  onClick={this.props.onHide}>Cancel</Button>
                 </Form.Group>
                 </Form>
                 </Col>
@@ -180,7 +193,7 @@ import IconButton from '@material-ui/core/IconButton';
             </Modal.Body>
             <Modal.Footer>
            
-              <Button  variant="danger"  onClick={this.props.onHide}>Close</Button>
+              <span  className="loginText" variant="danger"  onClick={this.props.onHide}>X</span>
             </Modal.Footer>
             </Modal>
             </div>

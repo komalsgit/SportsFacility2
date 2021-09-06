@@ -17,15 +17,17 @@ import App1 from './App1';
 import LoginForm from './components/LoginForm/LoginForm';
 import RegistrationForm from './components/RegistrationForm/RegistrationForm';
 import Login2 from './Login2';
+import { AddRoleModal } from './AddRoleModal';
 
 class App extends Component {
   render(){
     return(
       <div className="App">
         <Switch>
-          <Route exact path="/" component={Form} />
+          <Route exact path="/" component={Login2} />
           <Route path="/Login" component={App1}/>
-          <Route path="/Registration" component={RegistrationForm}/>
+          <Route path="/Registration" component={AddRoleModal}/>
+          <Route path="/Registration/login" component={Login2}/>
           <Route path="/usermanagement" component={UserManagement} />
           <Route path="/home" component={Home} />
           <Route path="/admin/facilitymodifier" component={FacilityModifier} />

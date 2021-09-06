@@ -78,11 +78,11 @@ componentDidUpdate() {
 		    };
 	
 	  handleSubmit(event) {
-		alert('Location is: ' + this.state.value);
+		//alert('Location is: ' + this.state.value);
 		event.preventDefault();
 	  };
     deleteBooking(spid) {
-      if (window.confirm('Are you sure?')) {
+      if (window.confirm('Are you sure ❔❓')) {
           fetch('https://localhost:44345/api/TimeslotBookings/' + spid, {
               method: 'DELETE',
               headers: {
@@ -100,9 +100,7 @@ componentDidUpdate() {
       let addSModalClose = () => this.setState({ addSModalShow: false });
       let editSModalClose = () => this.setState({ editSModalShow: false });
       let btn_class = this.state.black ? "blackButton" : "whiteButton";
-	  function shoot() {
-	  alert("Form Submitted!");
-		  }	
+	 	
      
 		  return (
 		 
@@ -110,54 +108,38 @@ componentDidUpdate() {
 	  
 	   <form class="frm1">  
 			<div  >
-		<h1  class="wrapper">ABC Sports Facility</h1>
+          
+		<h1  class="wrapper"> ⚽⚾  ABC Sports Facility  🎾🏀</h1>
+        <h3> </h3>
 		
 		<div class="tab">
-        <button ><a href="/UserManagement">User Management</a></button>
-        <button><a href="/Admin/FacilityOverview">Admin</a></button>
+        <div  className="container" ref={this.container}>
+        <button ><a href="/UserManagement"> 💻 User Management</a></button>
+        <button><a href="/Admin/FacilityOverview"> 👲 Admin</a></button>
         <button  className={btn_class}
-                         onClick={this.changeColor.bind(this)}><a href="/Home/Booking"></a>Home/Booking</button>
+                         onClick={this.changeColor.bind(this)}><a href="/Home/Booking"></a> ⛪ Home/Booking</button>
     </div>
+   </div>
    </div>
    <br></br>
         <br></br>
-        <label class="lbl1"> Location:
-                               <select>
-                                  { locs && locs.map(loc => <option value={loc && loc.LOCATIONID}>{ loc && loc.LOCATIONNAME}</option>)}
-                                </select>
-                            </label>
 		<br></br>
     <br></br>
-		<h2 class="h2">Booking Page</h2>
-		<br></br>
+		<h2 class="h2">  🥎   __BOOKING__   🥎 </h2>
+	
 		<br></br>
     <form onSubmit={this.handleSubmit}>
 			 
 	  
 	 
 		<br></br>
-    Facility  : <input type ="text" 
+        ✦ Facility  ➪ <input type ="text" 
                             onChange={(event)=> {
                                 this.setState({searchTerm1 : event.target.value})
                             }}
                             /> 
                             <br></br>
-                           <Table>
-                            <thead>
-                                <tr>
-                                   
-                                    <th>Booking Id</th>
-                                    <th>Facility</th>
-                                    <th>Sport</th>
-                                    <th>Event Date</th>
-                                    <th>Booking Date</th>
-                                    <th>TimeSlot</th>
-                                    <th>Booking Status</th>
-                                    <th>Location</th>
-                                   
-                                </tr>
-                                </thead>
-                                </Table>
+                          
                                  { books && books.filter((val) => {
                           if (val && val.FACILITYNAME.includes(this.state.searchTerm1)){
                                 return val
@@ -174,6 +156,14 @@ componentDidUpdate() {
                                 <Table>
                                      <thead>
                                 <tr>
+                                <th>Booking Id</th>
+                                    <th>Facility</th>
+                                    <th>Sport</th>
+                                    <th>Event Date</th>
+                                    <th>Booking Date</th>
+                                    <th>TimeSlot</th>
+                                    <th>Booking Status</th>
+                                    <th>Location</th>
                                     
                                     
                                    
@@ -195,7 +185,7 @@ componentDidUpdate() {
                                             <Button
                                                     className="mr-2"
                                                     onClick={() => this.deleteBooking(val && val.BOOKINGSID)}
-                                                    variant="danger">Delete</Button>
+                                                    variant="danger">Delete ❌</Button>
                                                
                                             </ButtonToolbar>
                                         </td>
@@ -204,6 +194,9 @@ componentDidUpdate() {
                          
                              </Table>
           )} )}
+          <br></br>
+          <br></br>
+          <h4 class ="h3"> ...Bookings...</h4>
               
              <Table>
 
@@ -256,7 +249,7 @@ componentDidUpdate() {
                          <Button
                                 variant='primary'
                                 onClick={() => this.setState({ addSModalShow: true })}
-                            >Book Now
+                            >Book Now ❗❗
                             </Button>
                             <AddBookModal
                                 show={this.state.addSModalShow}
@@ -266,6 +259,8 @@ componentDidUpdate() {
                         
                
                         <br></br>
+                        <br></br>
+                        <h4 class="h5">@ABC sports Facility</h4>
                            </form>
 		</form>
 		</form>

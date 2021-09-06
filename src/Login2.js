@@ -3,6 +3,8 @@ import React, { Component } from 'react'
 //import data from "./data.json";
 //import './HomeApp.css';
 //import './Login.css';
+//import {Button,ButtonToolbar,Form} from 'react-bootstrap';
+import { AddRoleModal } from './AddRoleModal';
 
 import { Row,Col,Table, Button, ButtonToolbar,Form } from 'react-bootstrap';
 import { AddBookModal } from './AddBookModal';
@@ -40,6 +42,7 @@ class Login2 extends Component {
     
             event.preventDefault();
            
+           
            fetch ('https://localhost:44345/api/LoginManagement/',{
                method: 'POST',
                 headers:{
@@ -64,18 +67,22 @@ class Login2 extends Component {
               ){
                    this.setState({redirect: "/Home" });
               }else{
-                this.setState({ redirect:"/Login2" })
+                this.setState({ redirect:"/login2" })
               }
                   // this.setState({snackbaropen:true,snackbarmsg:res})
                },
                 (error)=>{
                   // alert('Failed')
-                   this.setState({ redirect:"/Login2" })
+                   this.setState({ redirect:"/login2" })
                   
                   // this.setState({snackbaropen:true,snackbarmsg:'failed'})
                 }
                 )
         }
+     
+  
+
+      
        redirectToRegister(event){
           event.preventDefault();{
           this.setState({ redirect:"/Home" });
@@ -105,19 +112,19 @@ class Login2 extends Component {
 			  <form class="frm1" onSubmit={this.handleSubmit}>
 	  
 			<div  >
-		<h1  class="wrapper">ABC Sports Facility</h1>
+		<h1  class="wrapper"> ⚽⚾  ABC Sports Facility  🎾🏀</h1>
 		
 	
    </div>
 		<br></br>
     <br></br>
-		<h2 class="h2">Login Page</h2>
+		<h2 class="h2">  ✦ Login Page  ✦</h2>
 		<br></br>
     <Row class="row">
       <Col  xs={3} md={3}></Col>
       <Col xs={6} md={6} class="col">
         <Form.Group   className="loginText" controlid="EMAIL">
-                     <Form.Label> Email Id</Form.Label>
+                     <Form.Label>✦  Email Id</Form.Label>
                      <Form.Control
                      className="loginText"
                      type="email"
@@ -132,7 +139,7 @@ class Login2 extends Component {
                      <Col  xs={3} md={3}></Col>
                      <Col  xs={6} md={6}  class="col">
                      <Form.Group   className="loginText" controlid="USER_PWD">
-                     <Form.Label> Password</Form.Label>
+                     <Form.Label> ✦ Password</Form.Label>
                      <Form.Control
                      type="password"
                      name="USER_PWD"
@@ -142,15 +149,29 @@ class Login2 extends Component {
                      </Form.Group>
                      </Col>
                      </Row>
+                   
             <br></br>
            
     
                 <Button type="submit">Submit</Button>
                 <div className="registerMessage">
                 <span>Dont have an account? </span>
-                <span className="loginText" onClick={()=>this.setState({redirect:"/Registration"})}>Register</span> 
+              
+                                   <span className="loginText"
+                                    variant ='primary'
+                                   onClick={()=> this.setState({addSModalShow: true})}
+                                   >Register
+                                   </span>
+                                   <AddRoleModal
+                                       show={this.state.addSModalShow}
+                                       onHide={addSModalClose}
+                                   />
+
+                              
             </div>
-               
+            <br></br>
+            <br></br>
+            <h4 class="h5">@ABC sports Facility</h4>
                </form>
                </div>
               

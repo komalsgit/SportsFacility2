@@ -10,7 +10,7 @@ export class AddSportModal extends Component {
     this.state = { snackbaropen: false, snackbarmsg: '' };
     this.state = {
       SPORTSID: "", sports: [], EQUIPMENTID: "", equips: [], TIMESLOTID: "", slots: [], LOCATIONID: "",
-      locations: [], FACILITYID: "", facis: [], BOOKINGID: "", books: [], sportse: [], snackbaropen: false, snackbarmsg: ''
+      locations: [], FACILITYID: "", facis: [],facies:[], BOOKINGID: "", books: [], sportse: [], snackbaropen: false, snackbarmsg: ''
     };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -67,12 +67,12 @@ export class AddSportModal extends Component {
   };
   handleSubmit(event) {
     event.preventDefault();
-    alert(this.state.LOCATIONID);
-    alert(this.state.FACILITYID);
-    alert(this.state.SPORTSID);
-    alert(this.state.EQUIPMENTID);
-    alert(this.state.TIMESLOTID);
-    alert(this.state.BOOKINGID);
+   // alert(this.state.LOCATIONID);
+    //alert(this.state.FACILITYID);
+   // alert(this.state.SPORTSID);
+   // alert(this.state.EQUIPMENTID);
+   // alert(this.state.TIMESLOTID);
+   // alert(this.state.BOOKINGID);
     fetch('https://localhost:44345/api/AddSportsTotal/PostSport', {
       method: 'POST',
       headers: {
@@ -84,7 +84,8 @@ export class AddSportModal extends Component {
         ISACTIVE: null,
         SPORTSID: this.state.SPORTSID,
         EQUIPMENTID: this.state.EQUIPMENTID,
-        BOOKINGID: this.state.BOOKINGID,
+       // BOOKINGID: this.state.BOOKINGID,
+       BOOKINGID: 4,
         LOCATIONID: this.state.LOCATIONID,
         TIMESLOTID: this.state.TIMESLOTID,
         FACILITYID:this.state.FACILITYID
@@ -92,11 +93,11 @@ export class AddSportModal extends Component {
     })
       .then(res => res.json())
       .then((res) => {
-        alert(res);
+       // alert(res);
         // this.setState({snackbaropen:true,snackbarmsg:res})
       },
         (error) => {
-          alert('Failed')
+        //  alert('Failed')
           // this.setState({snackbaropen:true,snackbarmsg:'failed'})
         }
       )
@@ -155,25 +156,49 @@ export class AddSportModal extends Component {
                 <Form onSubmit={this.handleSubmit}>
                   <Form.Group controlId="SPORTNAME">
                     <br></br>
+                   
+                    <br></br>
+                   
+                 <Col  xs={2} md={6} class="col">
                     <Form.Label>Location</Form.Label>
-                    <Form.Control as="select" onChange={(ddl => this.setState({ LOCATIONID: ddl.target.value }))} controlId="LocationDropdown" >
+                    <Form.Control as="select" onChange={(ddl=>this.setState({LOCATIONID:ddl.target.value}) + fetch(`https://localhost:44345/api/FacilityfromLocation?LOCATIONID=${ddl.target.value}`)
+            .then(response => response.json())
+            .then(data => {
+              this.setState({ facies: data })
+            }))}
+                     controlId="locDropdown" >
                       {
-                        this.state.locations.map(location =>
-                          <option value={location.LOCATIONID} >{location.LOCATIONNAME}</option>
-                        )
+                        this.state.locations.map(location=>
+                          <option  value={location.LOCATIONID} >{location.LOCATIONNAME}</option>
+                          )
                       }
-
+                      
                     </Form.Control>
+                   
+                  
+                   <br></br>
+                  
+                    </Col>
+                     
+                   <br></br>
+                  
+
+                    <Col xs={2} md={6} class="col">
                     <Form.Label>Facility</Form.Label>
-                    <Form.Control as="select" onChange={(ddl => this.setState({ FACILITYID: ddl.target.value }))} controlId="FacilityDropdown" >
+                    <Form.Control as="select" onChange={(ddl=>this.setState({FACILITYID:ddl.target.value}) + fetch(`https://localhost:44345/api/SportfromFacility?FACILITYID=${ddl.target.value}`)
+            .then(response => response.json())
+            .then(data => {
+              this.setState({ sportss: data })
+            }))}  >
                       {
-                        this.state.facis.map(faci =>
-                          <option value={faci.FACILITYID} >{faci.FACILITYNAME}</option>
-
-                        )
-
+                        this.state.facies.map(location=>
+                          <option  value={location.FACILITYID} >{location.FACILITYNAME}</option>
+                          )
                       }
-                    </Form.Control>
+                       </Form.Control>
+                      
+</Col>
+                    
                       <br></br>
                     <Form.Label>Sport</Form.Label>
                     <Form.Control as="select" onChange={(ddl => this.setState({ SPORTSID: ddl.target.value }))} controlId="SporteDropdown" >
@@ -208,32 +233,15 @@ export class AddSportModal extends Component {
                   <br></br>
 
 
-                  <br></br>
+              
 
-                  <Form.Label>Bookings</Form.Label>
-                  <Form.Control as="select" onChange={(ddl => this.setState({ BOOKINGID: ddl.target.value }))} controlId="BookingsDropdown" >
-                    {
-                      this.state.books.map(books =>
-                        <option value={books.BOOKINGID} >{books.BOOKINGNAME}</option>
-                      )
-                    }
+             
 
-                  </Form.Control>
-                  <br></br>
-
-                  <Form.Group controlId="ISACTIVE">
-                    <label>IsActive</label>
-                    <input
-                      type="checkbox"
-                      name="ISACTIVE"
-
-                      placeholder="Sport Enabled "
-
-                    />
-                  </Form.Group>
+                
 
                   <Form.Group>
                     <Button type="submit">Submit!</Button>
+                    <Button variant="danger" onClick={this.props.onHide}>Cancel</Button>
                   </Form.Group>
                 </Form>
               </Col>
@@ -243,7 +251,7 @@ export class AddSportModal extends Component {
           </Modal.Body>
           <Modal.Footer>
 
-            <Button variant="danger" onClick={this.props.onHide}>Close</Button>
+          <span  className="loginText" variant="danger"  onClick={this.props.onHide}>X</span>
           </Modal.Footer>
         </Modal>
       </div>

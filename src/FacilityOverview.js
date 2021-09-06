@@ -146,21 +146,21 @@ import { Redirect } from 'react-router-dom';
                         <form >
                         <form  class="frm1">
                             <div  >
-                                <h1 class="wrapper">ABC Sports Facility</h1>
+                                <h1 class="wrapper"> ⚽⚾  ABC Sports Facility  🎾🏀</h1>
 
                                 <div class="tab">
                        
                                 <div  className="container" ref={this.container}>
-                            <button  onClick={()=>this.setState({redirect:"/UserManagement"})}> <a href="UserManagement">User Management</a></button>
+                            <button  onClick={()=>this.setState({redirect:"/UserManagement"})}> <a href="UserManagement">💻User Management</a></button>
                             
                             <button type="button" class="button" onClick={this.handleButtonClick}
-                        >Admin ☰</button>
-                         <button  onClick={()=>this.setState({redirect:"/Home"})}><a href="Home">Home/Booking</a></button>
+                        >👲Admin ☰</button>
+                         <button onClick={()=>this.setState({redirect:"/Home"})}><a href="Home">⛪Home/Booking</a></button>
                           {this.state.open && (
                         <div class="dropdown">
     <ul>
-      <li><a href="FacilityOverview">FacilityOverview</a></li>
-      <li><a href="FacilityModifier">FacilityModifier</a></li>
+      <li    className="loginText" onClick={()=>this.setState({redirect:"/admin/facilityoverview"})}>FacilityOverview</li>
+      <li  onClick={()=>this.setState({redirect:"/admin/facilitymodifier"})} >FacilityModifier</li>
     </ul>
   </div>
      )}              
@@ -170,22 +170,14 @@ import { Redirect } from 'react-router-dom';
                     </div>
                    
                     <br></br>
-                            <br></br>
-                          
-                            <label class="lbl1">
-                                Location:
-                               
-                                <select>
-                                  { locs && locs.map(loc => <option value={loc && loc.LOCATIONID}>{ loc && loc.LOCATIONNAME}</option>)}
-                                </select>
-                            </label>
+                    
                            
                             <br></br>
                             <br></br>
-                            <h2 class="h2">Facilities Overview</h2>
+                            <h2 class="h2"> ✦ FACILITIES OVERVIEW  ✦</h2>
                             <br />
                             <br></br>
-                            Location :<input type ="text"
+                            ✦ Location : <input type ="text"
                       onChange={(event)=> {
                           this.setState({searchTerm1 : event.target.value})
                       }}
@@ -204,7 +196,7 @@ import { Redirect } from 'react-router-dom';
                                 <Table>
                                 <thead>
                                     <tr>
-                                         <th></th>
+                      
                                          <th>FACILITYID</th>
                                         <th>FACILITYNAME</th>
                                         <th>LOCATION</th>
@@ -217,7 +209,6 @@ import { Redirect } from 'react-router-dom';
                                     
                                         <td>{val && val.FACILITYID}</td>
                                         <td>{val && val.FACILITYNAME}</td>
-                                        <td>{val && val.LOCATIONNAME}</td>
                                         <td>{val && val.LOCATIONNAME}</td>
                                         <td  type="hidden">{val && val.FACILITYENABLED}</td>
                                         <td>
@@ -264,7 +255,7 @@ import { Redirect } from 'react-router-dom';
                                </ButtonToolbar>
                             <br></br>
                             <br></br>
-                            <h3 class="h3">Booking Preview</h3>
+                            <h3 class="h3">BOOKINGS PREVIEW</h3>
                             <br></br>
 
                             <div>
@@ -275,22 +266,7 @@ import { Redirect } from 'react-router-dom';
                             }}
                             /> 
                             <br></br>
-                           <Table>
-                            <thead>
-                                <tr>
-                                   
-                                    <th>Booking Id</th>
-                                    <th>Facility</th>
-                                    <th>Sport</th>
-                                    <th>Event Date</th>
-                                    <th>Booking Date</th>
-                                    <th>TimeSlot</th>
-                                    <th>Booking Status</th>
-                                    <th>Location</th>
-                                   
-                                </tr>
-                                </thead>
-                                </Table>
+                         
                                  { books && books.filter((val) => {
                           if ( val && val.BOOKINGSID == this.state.searchTerm3 ){
                                 return val
@@ -307,6 +283,14 @@ import { Redirect } from 'react-router-dom';
                                 <Table>
                                      <thead>
                                 <tr>
+                                <th>Booking Id</th>
+                                    <th>Facility</th>
+                                    <th>Sport</th>
+                                    <th>Event Date</th>
+                                    <th>Booking Date</th>
+                                    <th>TimeSlot</th>
+                                    <th>Booking Status</th>
+                                    <th>Location</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -334,6 +318,7 @@ import { Redirect } from 'react-router-dom';
                          
                              </Table>
           )} )}
+          <br></br>
           
 
                                 <Button ><a  className="btn btn-primary" href="/Home/Booking">Modify Booking</a></Button>
@@ -341,6 +326,8 @@ import { Redirect } from 'react-router-dom';
                             </div>
                             <br></br>
                             <br />
+                            <br></br>
+                            <h4 class="h5">@ABC sports Facility</h4>
                            
                         </form>
                   </form>

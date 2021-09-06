@@ -46,7 +46,7 @@ import IconButton from '@material-ui/core/IconButton';
         ///////	alert('submit: ' + this.state.value);
            // alert(this.state.value);
             event.preventDefault();
-        	alert(event.target.EQUIPMENTNAME.value);
+        	alert(event.target.EQUIPMENTNAME.value +" is Added !!");
             
         
             fetch ('https://localhost:44345/api/EquipmentSport/',{
@@ -73,11 +73,11 @@ import IconButton from '@material-ui/core/IconButton';
                 .then((res)=>
                 {
                   // alert(res );
-                   this.setState({snackbaropen:true,snackbarmsg:res})
+                  // this.setState({snackbaropen:true,snackbarmsg:res})
                },
                 (error)=>{
                   // alert('Failed')
-                   this.setState({snackbaropen:true,snackbarmsg:'failed'})
+                  // this.setState({snackbaropen:true,snackbarmsg:'failed'})
                 }
                 )
         }
@@ -169,7 +169,8 @@ import IconButton from '@material-ui/core/IconButton';
                      </Form.Group>
                     <br></br>
                 <Form.Group>
-                <Button type="submit">Submit!</Button>
+                <Button type="submit">Submit</Button>
+                <Button  variant="danger"  onClick={this.props.onHide}>Cancel</Button>
                 </Form.Group>
                 </Form>
                 </Col>
@@ -178,8 +179,7 @@ import IconButton from '@material-ui/core/IconButton';
        
             </Modal.Body>
             <Modal.Footer>
-           
-              <Button  variant="danger"  onClick={this.props.onHide}>Close</Button>
+            <span  className="loginText" variant="danger"  onClick={this.props.onHide}>X</span>
             </Modal.Footer>
             </Modal>
             </div>

@@ -18,7 +18,7 @@ export class EditFacModel extends Component{
         ///////	alert('submit: ' + this.state.value);
            // alert(this.state.value);
             event.preventDefault();
-        	alert(event.target.FACILITYNAME.value);
+        	alert(event.target.FACILITYNAME.value + " is Edited");
             
         
             fetch ('https://localhost:44345/api/Values/Put',{
@@ -42,11 +42,11 @@ export class EditFacModel extends Component{
                 .then((res)=>
                 {
                   // alert(res );
-                   this.setState({snackbaropen:true,snackbarmsg:res})
+                  // this.setState({snackbaropen:true,snackbarmsg:res})
                },
                 (error)=>{
                   // alert('Failed')
-                   this.setState({snackbaropen:true,snackbarmsg:'failed'})
+                  // this.setState({snackbaropen:true,snackbarmsg:'failed'})
                 }
                 )
         }
@@ -88,7 +88,7 @@ export class EditFacModel extends Component{
              <Row>
                  <Col sm={6}>
                  <Form  onSubmit={this.handleSubmit}> 
-                 <Form.Group controlId="FACILITYNAME">
+                 <Form.Group controlid="FACILITYNAME">
                      <Form.Label>FACILITYNAME</Form.Label>
                      <Form.Control
                      type="text"
@@ -139,6 +139,7 @@ export class EditFacModel extends Component{
                  </Form.Group>
                  <Form.Group>
                  <Button type="submit">Submit!</Button>
+                 <Button variant="danger"  onClick={this.props.onHide}>Cancel</Button>
                  </Form.Group>
                  </Form>
                  </Col>
@@ -148,7 +149,7 @@ export class EditFacModel extends Component{
              </Modal.Body>
              <Modal.Footer>
             
-               <Button  variant="danger"  onClick={this.props.onHide}>Close</Button>
+             <span  className="loginText" variant="danger"  onClick={this.props.onHide}>X</span>
              </Modal.Footer>
              </Modal>
              </div>
