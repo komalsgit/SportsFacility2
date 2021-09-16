@@ -11,6 +11,8 @@ import { AddBookModal } from './AddBookModal';
 //import Pagination from '@material-ui/lab/Pagination';
 //import TablePagination from '@material-ui/core/TablePagination';
 //import ReactPaginate from 'react-paginate';
+import  { withRouter } from "react-router-dom";
+import reactDOM from 'react-dom';
 
 
 class Home extends Component {
@@ -111,14 +113,27 @@ componentDidUpdate() {
           
 		<h1  class="wrapper"> ⚽⚾  ABC Sports Facility  🎾🏀</h1>
         <h3> </h3>
-		
+      
 		<div class="tab">
+      
         <div  className="container" ref={this.container}>
         <button ><a href="/UserManagement"> 💻 User Management</a></button>
         <button><a href="/Admin/FacilityOverview"> 👲 Admin</a></button>
         <button  className={btn_class}
                          onClick={this.changeColor.bind(this)}><a href="/Home/Booking"></a> ⛪ Home/Booking</button>
+                       
+                    
     </div>
+    <br></br>
+    <div  class="tap">
+        <div>
+                <button> <a href="/logout" >Logout</a></button>   
+                </div> 
+                </div>   
+    <div >
+   
+        </div>
+       
    </div>
    </div>
    <br></br>
@@ -132,118 +147,7 @@ componentDidUpdate() {
 			 
 	  
 	 
-		<br></br>
-        ✦ Facility  ➪ <input type ="text" 
-                            onChange={(event)=> {
-                                this.setState({searchTerm1 : event.target.value})
-                            }}
-                            /> 
-                            <br></br>
-                          
-                                 { books && books.filter((val) => {
-                          if (val && val.FACILITYNAME.includes(this.state.searchTerm1)){
-                                return val
-                            }
-                            else if(this.state.searchTerm1 == "") {
-                                return null
-                                }
-                                else {
-                                    return null
-                                }
-      })
-                        .map((val,key) => {
-                            return (
-                                <Table>
-                                     <thead>
-                                <tr>
-                                <th>Booking Id</th>
-                                    <th>Facility</th>
-                                    <th>Sport</th>
-                                    <th>Event Date</th>
-                                    <th>Booking Date</th>
-                                    <th>TimeSlot</th>
-                                    <th>Booking Status</th>
-                                    <th>Location</th>
-                                    
-                                    
-                                   
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr key={key}>
-                               
-                                <td>{val && val.BOOKINGSID}</td>
-                                <td>{val && val.FACILITYNAME}</td>
-                                <td>{val && val.SPORTNAME}</td>
-                                <td>{val && val.EVENTDATE}</td>
-                                <td>{val && val.CREATEDDATE}</td>
-                                <td>{val && val.TIMESLOT}</td>
-                                <td>{val && val.BOOKINGSTATUS}</td>
-                                <td>{val && val.LOCATIONNAME}</td>
-                                <td>
-                                        <ButtonToolbar>
-                                            <Button
-                                                    className="mr-2"
-                                                    onClick={() => this.deleteBooking(val && val.BOOKINGSID)}
-                                                    variant="danger">Delete ❌</Button>
-                                               
-                                            </ButtonToolbar>
-                                        </td>
-                                </tr>
-                             </tbody>
-                         
-                             </Table>
-          )} )}
-          <br></br>
-          <br></br>
-          <h4 class ="h3"> ...Bookings...</h4>
-              
-             <Table>
-
-                        <thead>
-                                <tr>
-                                    <th>BookingId</th>
-                                    <th>Facility</th>
-                                    <th>Sport</th>
-                                    <th>Event Date</th>
-                                    <th>Booking Date</th>
-                                    <th>TimeSlot</th>
-                                    <th>Booking Status</th>
-                                    <th>Location</th>
-                                    <th>Actions</th>
-
-                                </tr>
-                            </thead>
-                           
-                            <tbody>
-                                {books && books.map(sport =>
-                                    <tr key={sport.BOOKINGSID && sport.BOOKINGSID}>
-
-                                        <td>{sport && sport.BOOKINGSID}</td>
-                                        <td>{sport && sport.FACILITYNAME}</td>
-                                        <td>{sport && sport.SPORTNAME}</td>
-                                        <td>{sport && sport.EVENTDATE}</td>
-                                <td>{sport && sport.CREATEDDATE}</td>
-                                        <td>{sport && sport.TIMESLOT}</td>
-
-
-                                        <td type="hidden">{sport && sport.BOOKINGSTATUS}</td>
-                                        <td type="hidden">{sport && sport.LOCATIONNAME}</td>
-                                        <td>
-                                        <ButtonToolbar>
-                                            <Button
-                                                    className="mr-2"
-                                                    onClick={() => this.deleteBooking(sport && sport.BOOKINGSID)}
-                                                    variant="danger">Delete</Button>
-                                               
-                                            </ButtonToolbar>
-                                        </td>
-                                       
-                                    </tr>)}
-                            </tbody>
-                            
-                            </Table>
-                           
+		
                        
                         <ButtonToolbar>
                          <Button
@@ -260,6 +164,8 @@ componentDidUpdate() {
                
                         <br></br>
                         <br></br>
+                       
+                        
                         <h4 class="h5">@ABC sports Facility</h4>
                            </form>
 		</form>
@@ -272,12 +178,12 @@ componentDidUpdate() {
 	  
 ;
   
- // ReactDOM.render(
-	//<Form />,
+  //ReactDOM.render(
+	//<Home />,
 	//document.getElementById('root')
- // );
+  //);
 //export default Form
 
   
 
-export default Home
+export default  withRouter(Home);

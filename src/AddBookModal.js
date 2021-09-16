@@ -90,11 +90,11 @@ export class AddBookModal extends Component{
                 .then((res)=>
                 {
                   // alert(res );
-                   this.setState({snackbaropen:true,snackbarmsg:res})
+                  // this.setState({snackbaropen:true,snackbarmsg:res})
                },
                 (error)=>{
                   // alert('Failed')
-                   this.setState({snackbaropen:true,snackbarmsg:'failed'})
+                  // this.setState({snackbaropen:true,snackbarmsg:'failed'})
                 }
                 )
         }
@@ -278,10 +278,7 @@ export class AddBookModal extends Component{
                     </Col> 
                    
                     <br></br>
-                    <Col xs={2} md={6} class="col">
-          
-                   
-                    </Col>
+        
                     <br></br>
                     <Col xs={6} md={8} class="col">
                     <Form.Label>User</Form.Label>

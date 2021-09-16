@@ -7,6 +7,7 @@ import { Table,Button,ButtonToolbar,Form} from 'react-bootstrap';
 import { AddFacModel } from './AddFacModel';
 import { EditFacModel } from './EditFacModel';
 import { Redirect } from 'react-router-dom';
+import  { withRouter } from "react-router-dom";
 
   class FacilityOverview extends Component {
                
@@ -163,8 +164,13 @@ import { Redirect } from 'react-router-dom';
       <li  onClick={()=>this.setState({redirect:"/admin/facilitymodifier"})} >FacilityModifier</li>
     </ul>
   </div>
-     )}              
+     )}  
+                 
                         </div>
+                        <br></br>
+                        <div  class="tap">
+    <button> <a href="/logout" >Logout</a></button>
+        </div>
                        
                     </div>
                     </div>
@@ -318,14 +324,121 @@ import { Redirect } from 'react-router-dom';
                          
                              </Table>
           )} )}
-          <br></br>
-          
-
-                                <Button ><a  className="btn btn-primary" href="/Home/Booking">Modify Booking</a></Button>
-
-                            </div>
+        </div>
                             <br></br>
                             <br />
+                            <br></br>
+        ✦ Location  ➪ <input type ="text" 
+                            onChange={(event)=> {
+                                this.setState({searchTerm3 : event.target.value})
+                            }}
+                            /> 
+                            <br></br>
+                          
+                                 { books && books.filter((val) => {
+                          if (val && val.LOCATIONNAME.includes(this.state.searchTerm3)){
+                                return val
+                            }
+                            else if(this.state.searchTerm3 == "") {
+                                return null
+                                }
+                                else {
+                                    return null
+                                }
+      })
+                        .map((val,key) => {
+                            return (
+                                <Table>
+                                     <thead>
+                                <tr>
+                                <th>Booking Id</th>
+                                    <th>Facility</th>
+                                    <th>Sport</th>
+                                    <th>Event Date</th>
+                                    <th>Booking Date</th>
+                                    <th>TimeSlot</th>
+                                    <th>Booking Status</th>
+                                    <th>Location</th>
+                                    
+                                    
+                                   
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr key={key}>
+                               
+                                <td>{val && val.BOOKINGSID}</td>
+                                <td>{val && val.FACILITYNAME}</td>
+                                <td>{val && val.SPORTNAME}</td>
+                                <td>{val && val.EVENTDATE}</td>
+                                <td>{val && val.CREATEDDATE}</td>
+                                <td>{val && val.TIMESLOT}</td>
+                                <td>{val && val.BOOKINGSTATUS}</td>
+                                <td>{val && val.LOCATIONNAME}</td>
+                                <td>
+                                        <ButtonToolbar>
+                                            <Button
+                                                    className="mr-2"
+                                                    onClick={() => this.deleteBooking(val && val.BOOKINGSID)}
+                                                    variant="danger">Delete ❌</Button>
+                                               
+                                            </ButtonToolbar>
+                                        </td>
+                                </tr>
+                             </tbody>
+                         
+                             </Table>
+          )} )}
+          <br></br>
+          <br></br>
+          <h4 class ="h3"> ...Bookings...</h4>
+              
+             <Table>
+
+                        <thead>
+                                <tr>
+                                    <th>BookingId</th>
+                                    <th>Facility</th>
+                                    <th>Sport</th>
+                                    <th>Event Date</th>
+                                    <th>Booking Date</th>
+                                    <th>TimeSlot</th>
+                                    <th>Booking Status</th>
+                                    <th>Location</th>
+                                    <th>Actions</th>
+
+                                </tr>
+                            </thead>
+                           
+                            <tbody>
+                                {books && books.map(sport =>
+                                    <tr key={sport.BOOKINGSID && sport.BOOKINGSID}>
+
+                                        <td>{sport && sport.BOOKINGSID}</td>
+                                        <td>{sport && sport.FACILITYNAME}</td>
+                                        <td>{sport && sport.SPORTNAME}</td>
+                                        <td>{sport && sport.EVENTDATE}</td>
+                                <td>{sport && sport.CREATEDDATE}</td>
+                                        <td>{sport && sport.TIMESLOT}</td>
+
+
+                                        <td type="hidden">{sport && sport.BOOKINGSTATUS}</td>
+                                        <td type="hidden">{sport && sport.LOCATIONNAME}</td>
+                                        <td>
+                                        <ButtonToolbar>
+                                            <Button
+                                                    className="mr-2"
+                                                    onClick={() => this.deleteBooking(sport && sport.BOOKINGSID)}
+                                                    variant="danger">Delete</Button>
+                                               
+                                            </ButtonToolbar>
+                                        </td>
+                                       
+                                    </tr>)}
+                            </tbody>
+                            
+                            </Table>
+                           
                             <br></br>
                             <h4 class="h5">@ABC sports Facility</h4>
                            
@@ -341,4 +454,4 @@ import { Redirect } from 'react-router-dom';
         
        }
      
-export default FacilityOverview
+export default withRouter(FacilityOverview)

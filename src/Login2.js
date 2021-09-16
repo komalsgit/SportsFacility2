@@ -4,23 +4,32 @@ import React, { Component } from 'react'
 //import './HomeApp.css';
 //import './Login.css';
 //import {Button,ButtonToolbar,Form} from 'react-bootstrap';
+import ProtectedRoute from './ProtectedRoute';
 import { AddRoleModal } from './AddRoleModal';
-
+import  Home  from './Home';
+import './App.css';
+import App from './App';
 import { Row,Col,Table, Button, ButtonToolbar,Form } from 'react-bootstrap';
 import { AddBookModal } from './AddBookModal';
 import { DatePickerComponent } from "@syncfusion/ej2-react-calendars";
 import { Redirect } from 'react-router-dom';
 import { withRouter } from "react-router-dom";
+import{  BrowserRouter as Router,Link,Route, Switch } from "react-router-dom";
 
 
 class Login2 extends Component {
 
 	constructor(props) {
 	  super(props);
-    this.state={locs:[],books:[], addSModalShow: false, editSModalShow: false}
+   
+    this.state={locs:[],books:[],UserRoleId :"",equips:[], addSModalShow: false, editSModalShow: false}
 	  this.state = { searchTerm1:'',};
-	  this.state = {value: 'ABCPune'};
-      this.state = { redirect: null, };
+    this.state = { redirect: null,isAuth:false };
+	//  this.state = {value: 'ABCPune'};
+    
+     // this.state = {
+       // isAuth:true
+     // };
 //render() {
   
  // return(
@@ -39,9 +48,35 @@ class Login2 extends Component {
         handleSubmit(event) {
            // alert(event.target.EMAIL.value);
            // alert(event.target.USER_PWD.value)
-    
+         //  this.setState({isAuth:true})
             event.preventDefault();
-           
+            fetch(`https://localhost:44345/api/getRole?EMAIL=${event.target.EMAIL.value}`)
+            .then(response => response.json())
+          
+           .then(data => {
+               this.setState({ equips: data })
+             // alert(JSON.stringify(data))
+            //  localStorage.setItem('Idm',JSON.stringify(data))
+              var op = data.map(function(item) {
+                var keys = Object.keys(item);
+                var arr = [];
+                keys.forEach(function(key) {
+                  arr.push(item[key]);
+                });
+                return arr;
+              });
+             // alert(op);
+              localStorage.setItem('val',op)
+              
+              // .then(res => res.json())
+              /////////// .then((response)=>
+             //////////////////  {
+              //////////////////////////  localStorage.setItem('Idm',JSON.stringify(response))
+            //localStorage.setItem('Idm',response.value)
+             ///////////////////////  }
+            }
+           );
+           // this.setState({ isAuth : true })
            
            fetch ('https://localhost:44345/api/LoginManagement/',{
                method: 'POST',
@@ -60,14 +95,21 @@ class Login2 extends Component {
            .then(res => res.json())
                 .then((res)=>
                 {
-                   alert(res );
+                 localStorage.setItem('Email', event.target.EMAIL.value)
+                  localStorage.setItem('Login2',res)
+                  // alert("Success");
               //    this.setState({value: 1})
               if (
                   res == "Success"
               ){
-                   this.setState({redirect: "/Home" });
+              
+                // this.setState({ isAuth : true })
+               //  alert(this.state.isAuth)
+           
+                   this.setState({ redirect: "/home" });
               }else{
-                this.setState({ redirect:"/login2" })
+               // this.setState({ redirect:"/login2" })
+               // this.setState({ isAuth : false });
               }
                   // this.setState({snackbaropen:true,snackbarmsg:res})
                },
@@ -99,6 +141,8 @@ class Login2 extends Component {
         if (this.state.redirect) {
             return <Redirect to={this.state.redirect} />
           }
+         
+          const { isAuth } = this.state;
       const {locs,books} = this.state;
       let addSModalClose = () => this.setState({ addSModalShow: false });
       let editSModalClose = () => this.setState({ editSModalShow: false });
@@ -151,9 +195,27 @@ class Login2 extends Component {
                      </Row>
                    
             <br></br>
-           
-    
-                <Button type="submit">Submit</Button>
+            <Row>
+              <Col  xs={10} md={3}></Col>
+                     <Col  xs={5} md={5}  class="col">
+          
+
+         
+            <div className="App">
+              <Button type="submit"  onClick={() => this.setState({ isAuth: true})} >Submit</Button>
+              <div>
+            
+              </div>
+                 </div>
+               
+             
+             
+             
+            
+             
+             
+             </Col>
+              </Row>
                 <div className="registerMessage">
                 <span>Dont have an account? </span>
               

@@ -8,6 +8,7 @@ import { Table, Button, ButtonToolbar } from 'react-bootstrap';
 import { EditTimeSlot } from './EditTimeSlot';
 import { AddEquipmentModel } from './AddEquipmentModel';
 import { Redirect } from 'react-router-dom';
+import  { withRouter } from "react-router-dom";
 
 
 
@@ -158,8 +159,13 @@ class FacilityModifier extends Component {
       <li   className="loginText" onClick={()=>this.setState({redirect:"/admin/facilitymodifier"})}>FacilityModifier</li>
     </ul>
   </div>
-     )}               
+     )}  
+                 
                         </div>
+                        <br></br>
+                        <div  class="tap">
+    <button> <a href="/logout" >Logout</a></button>
+        </div> 
                     </div>
                     </div>
                     <br></br>
@@ -408,4 +414,4 @@ ReactDOM.render(
 
 
 
-export default FacilityModifier
+export default withRouter(FacilityModifier)

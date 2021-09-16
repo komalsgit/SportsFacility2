@@ -42,11 +42,11 @@ export class EditTimeSlot extends Component{
                 .then((res)=>
                 {
                   // alert(res );
-                   this.setState({snackbaropen:true,snackbarmsg:res})
+                 //  this.setState({snackbaropen:true,snackbarmsg:res})
                },
                 (error)=>{
                   // alert('Failed')
-                   this.setState({snackbaropen:true,snackbarmsg:'failed'})
+                  // this.setState({snackbaropen:true,snackbarmsg:'failed'})
                 }
                 )
         }

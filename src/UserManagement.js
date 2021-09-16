@@ -117,6 +117,10 @@ componentDidUpdate() {
             <button><a href ="admin/FacilityModifier">👲Admin</a></button>
             <button><a href="Home/Booking">⛪Home/Booking</a></button>
           </div>
+          <br></br>
+          <div  class="tap">
+    <button> <a href="/logout" >Logout</a></button>
+        </div> 
           </div>
           <br></br>
       

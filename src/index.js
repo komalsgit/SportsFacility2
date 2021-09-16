@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter,Link,NavLink,Switch,Route,Redirect } from "react-router-dom";
+//import Login2 from './Login2';
 //import {ProductProvider} from './Context';
 //import  {AddFacModel} from './AddFacModel'; 
 
@@ -15,6 +16,7 @@ ReactDOM.render(
  
   
     <App />
+   
    
  
  

@@ -67,6 +67,7 @@ export class AddSportModal extends Component {
   };
   handleSubmit(event) {
     event.preventDefault();
+    alert("sport is Added !!")
    // alert(this.state.LOCATIONID);
     //alert(this.state.FACILITYID);
    // alert(this.state.SPORTSID);
@@ -156,50 +157,25 @@ export class AddSportModal extends Component {
                 <Form onSubmit={this.handleSubmit}>
                   <Form.Group controlId="SPORTNAME">
                     <br></br>
-                   
-                    <br></br>
-                   
-                 <Col  xs={2} md={6} class="col">
                     <Form.Label>Location</Form.Label>
-                    <Form.Control as="select" onChange={(ddl=>this.setState({LOCATIONID:ddl.target.value}) + fetch(`https://localhost:44345/api/FacilityfromLocation?LOCATIONID=${ddl.target.value}`)
-            .then(response => response.json())
-            .then(data => {
-              this.setState({ facies: data })
-            }))}
-                     controlId="locDropdown" >
+                    <Form.Control as="select" onChange={(ddl => this.setState({ LOCATIONID: ddl.target.value }))} controlId="LocationDropdown" >
                       {
-                        this.state.locations.map(location=>
-                          <option  value={location.LOCATIONID} >{location.LOCATIONNAME}</option>
-                          )
+                        this.state.locations.map(location =>
+                          <option value={location.LOCATIONID} >{location.LOCATIONNAME}</option>
+                        )
                       }
-                      
-                    </Form.Control>
-                   
-                  
-                   <br></br>
-                  
-                    </Col>
-                     
-                   <br></br>
-                  
 
-                    <Col xs={2} md={6} class="col">
+                    </Form.Control>
                     <Form.Label>Facility</Form.Label>
-                    <Form.Control as="select" onChange={(ddl=>this.setState({FACILITYID:ddl.target.value}) + fetch(`https://localhost:44345/api/SportfromFacility?FACILITYID=${ddl.target.value}`)
-            .then(response => response.json())
-            .then(data => {
-              this.setState({ sportss: data })
-            }))}  >
+                    <Form.Control as="select" onChange={(ddl => this.setState({ FACILITYID: ddl.target.value }))} controlId="FacilityDropdown" >
                       {
-                        this.state.facies.map(location=>
-                          <option  value={location.FACILITYID} >{location.FACILITYNAME}</option>
-                          )
+                        this.state.facis.map(faci =>
+                          <option value={faci.FACILITYID} >{faci.FACILITYNAME}</option>
+
+                        )
+
                       }
-                       </Form.Control>
-                      
-</Col>
-                    
-                      <br></br>
+                    </Form.Control>
                     <Form.Label>Sport</Form.Label>
                     <Form.Control as="select" onChange={(ddl => this.setState({ SPORTSID: ddl.target.value }))} controlId="SporteDropdown" >
                       {

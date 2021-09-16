@@ -9,12 +9,56 @@ import { Redirect } from 'react-router-dom';
    
     constructor(props){
         super(props);
-        this.state = { LOCATIONID:"",locations:[],UserRoleId:"",roles:[],USERID :"",users:[],snackbaropen: false, snackbarmsg: '', redirect: null};
+        this.state = {value: ''};
+        this.state = { LOCATIONID:"",locations:[],UserRoleId:"",roles:[],USERID :"",users:[],snackbaropen: false, snackbarmsg: '', redirect: null,USER_PWD:""};
+       
+        this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
        // this.state = { redirect: null };
+      
         
       
        }
+       handleChange(event) {
+        this.setState({
+            value: event.target.value
+        });
+    }
+     /*  handleChange(event) {
+        var pass = event.target.value;
+     //   var reg = /^[A-Z]*$/;
+        var reg =/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/
+      // var reg = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,32}$/;
+        var test = reg.test(pass);
+        if (test) {
+          // alert('pass');
+           this.setState({value: pass});
+        }else{
+          alert('fail');
+        }        
+   }*/
+     //  handleChange(event) {
+      //  this.setState({value: event.target.value});
+  //  }
+  //  validate(event) {
+   //   var pass = event.target.value;
+    //  var reg = '/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,32}$/';
+     // var test = reg.test(pass);
+      //if (test) {
+       //   alert('pass');
+    //  } else{
+        //  alert('fail');
+     // }
+   // }
+     //  handleChange(event) {
+     //   let input = this.state.input;
+      //  input[event.target.name] = event.target.value;
+      
+       // this.setState({
+        //  input
+       // });
+     // }
+      
        componentDidMount(){
         fetch ('https://localhost:44345/api/Locationss')
         .then(response => response.json())
@@ -40,11 +84,31 @@ import { Redirect } from 'react-router-dom';
       // handleChange(event) {
            // this.setState({value: event.target.value});
          // }
-         
+        
         
          handleSubmit(event) {
+          const { value } = this.state;
+        //  const re = new RegExp("^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,32}$");
+       // const re = /^[A-Z]*$/;
+       // const re =  /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/
+        const re = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/
+          const isOk = re.test(value);
+  
+          console.log(isOk);
+  
+          if(!isOk) {
+              return alert('weak!');
+          }
         
-            event.preventDefault();
+           // event.preventDefault();
+            if(this.state.value.length < 8) {
+              return false;
+          }
+  
+       //   alert('A password was submitted that was ' + this.state.value.length + '    characters long.');
+       //   event.preventDefault();
+      
+            
         //	alert(event.target.EMAIL.value);
           if (event.target.USER_PWD.value == event.target.USER_PWD1.value)
           {
@@ -72,12 +136,14 @@ import { Redirect } from 'react-router-dom';
                   if (
                     res == "Success"
                 ){
+                   // alert("Success")
                      this.setState({redirect: "/Home" });
-                }else if(res == "failure"){
-                  event.preventDefault();
-                  alert("failure")
-                  //this.setState({ redirect:"/login2" })
                 }
+                ////////////////else if(res == "failure"){
+                //// //////////////// event.preventDefault();
+             //   alert("Success")
+                  //this.setState({ redirect:"/login2" })
+               /////////// }
                   // alert(res );
                 //  if (event.target.USER_PWD.value == event.target.USER_PWD1.value){
                   //  this.setState({ redirect:"/Home" })
@@ -85,24 +151,26 @@ import { Redirect } from 'react-router-dom';
                 //  else if (event.target.USER_PWD.value == event.target.USER_PWD1.value){
                    // this.setState({ redirect:"/login2" })
                  // }
-                  this.setState({snackbaropen:true,snackbarmsg:res})
+                 // this.setState({snackbaropen:true,snackbarmsg:res})
                },
                 (error)=>{
                   // alert('Failed')
                //   this.setState({ redirect:"/login2" })
-                   this.setState({snackbaropen:true,snackbarmsg:'failed'})
+                  // this.setState({snackbaropen:true,snackbarmsg:'failed'})
                 }
                 )
         }
       else  if (event.target.USER_PWD.value != event.target.USER_PWD1.value) {
           alert("Password is not matching")
-          this.setState({ redirect:"/login2" })
+          return false;
+         // this.setState({ redirect:"/login2" })
         }
-         }
+      }
         
        
       
         render() {
+         
          if (this.state.redirect) {
             return <Redirect to={this.state.redirect} />
          }
@@ -146,14 +214,19 @@ import { Redirect } from 'react-router-dom';
                     <Form.Control
                     type="email"
                     name="EMAIL"
+                    placeholder="Enter email" 
                     required
                      />
                     </Form.Group>
+                    
                     <Form.Group controlid="USER_PWD">
                     <Form.Label>Password</Form.Label>
                     <Form.Control
                     type="password"
                     name="USER_PWD"
+                    value={this.state.value}
+                    onChange={this.handleChange} 
+                    placeholder="Enter password" 
                     required
                      />
                     </Form.Group>
@@ -162,6 +235,7 @@ import { Redirect } from 'react-router-dom';
                     <Form.Control
                     type="password"
                     name="USER_PWD1"
+                    placeholder=" Confirm password" 
                     required
                      />
                     </Form.Group>

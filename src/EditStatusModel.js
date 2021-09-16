@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
+/*import React, {Component} from 'react';
 import {Modal,Button,Row,Col,Form,} from 'react-bootstrap';
 
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 
-export class EditRoleModal extends Component{
+export class EditStatusModel extends Component{
     constructor(props){
         super(props);
         this.state = {UserRoleId:"",roles:[],snackbaropen: false, snackbarmsg: ''};
@@ -22,19 +22,25 @@ export class EditRoleModal extends Component{
         //	alert(event.target.UserRoleId.value);
             
         
-            fetch ('https://localhost:44345/api/UserRoleGet/Put',{
+            fetch ('https://localhost:44345/api/Sports/Put',{
                method: 'PUT',
                 headers:{
                     'Accept':'application/json',
                     'Content-Type':'application/json' 
                 },
                     body:JSON.stringify({
+                      BOOKINGSID:event.target.BOOKINGSID.value,
+                      TIMESLOTID: event.target.BOOKINGSID.value,
+                      LOCATIONID:event.target.LOCATIONID.value ,
+                        SPORTSID:event.target.SPORTSID.value,
+                   EVENTDATE:event.target.EVENTDATE.value,
+                   CREATEDDATE:event.target. CREATEDDATE.value,
+                   BOOKINGSTATUSID:event.target.BOOKINGSTATUSID.value,
+                      FACILITYID:event.target. FACILITYID.value,
                       USERID:event.target.USERID.value,
-                      EMAIL:event.target.EMAIL.value,
-                      USER_PWD:event.target.USER_PWD.value,
-                      ISACTIVE:event.target.ISACTIVE.value,
-                   UserRoleId:event.target.UserRoleId.value,
-                   LOCATIONID:event.target.LOCATIONID.value 
+                      EQUIPMENTID:event.target.EQUIPMENTID.value,
+                  // UserRoleId:event.target.UserRoleId.value,
+                  
                   // UserRoleName:this.state.UserRoleName.value,
                  
                  
@@ -55,7 +61,7 @@ export class EditRoleModal extends Component{
                 )
         }
         componentDidMount(){
-          fetch ('https://localhost:44345/api/UserRole')
+          fetch ('https://localhost:44345/api/BookingStatus')
           .then(response => response.json())
           .then(data => {
             this.setState({roles:data})
@@ -99,30 +105,95 @@ export class EditRoleModal extends Component{
              <Row>
                  <Col sm={6}>
                  <Form  onSubmit={this.handleSubmit}> 
+                 <Form.Group controlId=" BOOKINGSID">
+                     <Form.Control
+                     type="hidden"
+                     name=" BOOKINGSID"
+                     required
+                     disabled
+                     defaultValue = {this.props.bookid}
+                        />
+                 </Form.Group>
+               
+                 <Form.Group controlId="TIMESLOTID">
+                     <Form.Control
+                     type="hidden"
+                     name="TIMESLOTID"
+                     required
+                     disabled
+                     defaultValue = {this.props.timeslotid}
+                        />
+                 </Form.Group>
+                 <Form.Group controlId="LOCATIONID">
+                     <Form.Control
+                     type="hidden"
+                     name="LOCATIONID"
+                     required
+                     disabled
+                     defaultValue = {this.props.locationid}
+                        />
+                 </Form.Group>
+                 <Form.Group controlId="SPORTSID">
+                     <Form.Control
+                     type="hidden"
+                     name="SPORTSID"
+                     required
+                     disabled
+                     defaultValue = {this.props.sportsid}
+                        />
+                 </Form.Group>
+                 <Form.Group controlId="FACILITYID">
+                     <Form.Control
+                     type="hidden"
+                     name="FACILITYID"
+                     required
+                     disabled
+                     defaultValue = {this.props.facilityid}
+                        />
+                 </Form.Group>
                  <Form.Group controlId="USERID">
                      <Form.Control
                      type="hidden"
                      name="USERID"
                      required
                      disabled
-                     defaultValue = {this.props.userid}
+                     defaultValue = {this.props.usersid}
                         />
                  </Form.Group>
-                 <Form.Group controlId="EMAIL">
+                 <Form.Group controlId="EQUIPMENTID">
                      <Form.Control
                      type="hidden"
-                     name="EMAIL"
+                     name="EQUIPMENTID"
                      required
                      disabled
-                     defaultValue = {this.props.emid}
-                     />
+                     defaultValue = {this.props.equipmentid}
+                        />
                  </Form.Group>
-                 <Form.Label>UserRole</Form.Label>
-                    <Form.Control  name="UserRoleId"as="select" onChange={(ddl => this.setState({UserRoleId:ddl.target.value}))}  
+                 <Form.Group controlId="EVENTDATE">
+                     <Form.Control
+                     type="hidden"
+                     name="EVENTDATE"
+                     required
+                     disabled
+                     defaultValue = {this.props.edate}
+                        />
+                 </Form.Group>
+                 <Form.Group controlId="CREATEDDATE">
+                     <Form.Control
+                     type="hidden"
+                     name="CREATEDDATE"
+                     required
+                     disabled
+                     defaultValue = {this.props.cdate}
+                        />
+                 </Form.Group>
+               
+                 <Form.Label>BookingStatus</Form.Label>
+                    <Form.Control  name="BookingStatusid"as="select" onChange={(ddl => this.setState({BOOKINGSTATUSID:ddl.target.value}))}  
                      defaultValue = {this.props.roleid} controlId="RoleDropdown" >
                       {
                         this.state.roles.map(location=>
-                          <option  value={location.UserRoleId} >{location.UserRoleName}</option>
+                          <option  value={location.BOOKINGSTATUSID} >{location.BOOKINGSTATUS}</option>
                           )
                       }
                       
@@ -176,4 +247,4 @@ export class EditRoleModal extends Component{
  
          );
      }
-}
+}*/
