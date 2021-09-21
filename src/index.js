@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter,Link,NavLink,Switch,Route,Redirect } from "react-router-dom";
+//import 'bootstrap/dist/css/bootstrap.css';
 //import Login2 from './Login2';
 //import {ProductProvider} from './Context';
 //import  {AddFacModel} from './AddFacModel'; 

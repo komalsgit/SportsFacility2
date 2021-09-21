@@ -19,8 +19,8 @@ class Home extends Component {
 
 	constructor(props) {
 	  super(props);
-    this.state={locs:[],books:[], addSModalShow: false, editSModalShow: false,totalResults: 0,currentPage:1}
-	  this.state = { searchTerm1:'', 
+    this.state={locs:[],books:[],bookies:[], addSModalShow: false, editSModalShow: false,totalResults: 0,currentPage:1}
+	  this.state = { searchTerm1:'',show:true,show1:true
      //   offset: 0,
     //  tableData: [],
      // orgtableData: [],
@@ -38,10 +38,31 @@ class Home extends Component {
     
   componentDidMount() {
     this.refreshList();
+    fetch(`https://localhost:44345/api/GetBookingsFromId?USERID=${localStorage.getItem('val1')}`)
+    .then(response => response && response.json())
+    .then(response => {
+       this.setState({bookies: response && response });
+    })
+
     fetch('https://localhost:44345/api/Locationss')
     .then(response => response && response.json())
     .then(response => {
         this.setState({locs: response && response});
+        if ( localStorage.getItem('val')==1){
+        this.setState({ show:false})
+        }
+        else 
+        {
+          this.setState({show:true})
+        }
+
+        if ( localStorage.getItem('val')==2){
+          this.setState({ show1:false})
+          }
+          else 
+          {
+            this.setState({show1:true})
+          }
     }
     )
 }
@@ -97,7 +118,7 @@ componentDidUpdate() {
  
 
 	  render() {
-      const {locs,books} = this.state;
+      const {locs,books,show,bookies,show1} = this.state;
      // const numberPages = Math.floor(this.state.totalResults / 1);
       let addSModalClose = () => this.setState({ addSModalShow: false });
       let editSModalClose = () => this.setState({ editSModalShow: false });
@@ -117,8 +138,12 @@ componentDidUpdate() {
 		<div class="tab">
       
         <div  className="container" ref={this.container}>
-        <button ><a href="/UserManagement"> 💻 User Management</a></button>
-        <button><a href="/Admin/FacilityOverview"> 👲 Admin</a></button>
+         {show?
+          <a>
+         {show1?
+        <button><a href="/UserManagement"> 💻 User Management</a></button>:null}
+           { show ? 
+        <button><a href="/Admin/FacilityOverview"> 👲 Admin</a></button>:null} </a>:null}
         <button  className={btn_class}
                          onClick={this.changeColor.bind(this)}><a href="/Home/Booking"></a> ⛪ Home/Booking</button>
                        
@@ -143,6 +168,53 @@ componentDidUpdate() {
 		<h2 class="h2">  🥎   __BOOKING__   🥎 </h2>
 	
 		<br></br>
+    <Table>
+
+<thead>
+        <tr>
+            <th>BookingId</th>
+            <th>Facility</th>
+            <th>Sport</th>
+            <th>Event Date</th>
+            <th>Booking Date</th>
+            <th>TimeSlot</th>
+            <th>Booking Status</th>
+            <th>Location</th>
+            <th>Actions</th>
+
+        </tr>
+    </thead>
+   
+    <tbody>
+        {bookies && bookies.map(sport =>
+            <tr key={sport.BOOKINGSID && sport.BOOKINGSID}>
+
+                <td>{sport && sport.BOOKINGSID}</td>
+                <td>{sport && sport.FACILITYNAME}</td>
+                <td>{sport && sport.SPORTNAME}</td>
+                <td>{sport && sport.EVENTDATE}</td>
+        <td>{sport && sport.CREATEDDATE}</td>
+                <td>{sport && sport.TIMESLOT}</td>
+
+
+                <td type="hidden">{sport && sport.BOOKINGSTATUS}</td>
+                <td type="hidden">{sport && sport.LOCATIONNAME}</td>
+                <td>
+                <ButtonToolbar>
+                    <Button
+                            className="mr-2"
+                            onClick={() => this.deleteBooking(sport && sport.BOOKINGSID)}
+                            variant="danger">Delete</Button>
+                       
+                    </ButtonToolbar>
+                </td>
+               
+            </tr>)}
+    </tbody>
+    
+    </Table>
+   
+    <br></br>
     <form onSubmit={this.handleSubmit}>
 			 
 	  

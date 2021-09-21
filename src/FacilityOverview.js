@@ -3,11 +3,15 @@ import "./App.css";
 
 import './FacilityOverview.css';
 //import { Button } from '@syncfusion/ej2-buttons';
-import { Table,Button,ButtonToolbar,Form} from 'react-bootstrap';
+import { Table,Button,ButtonToolbar,Form, Pagination} from 'react-bootstrap';
 import { AddFacModel } from './AddFacModel';
 import { EditFacModel } from './EditFacModel';
+import { EditStatusModel } from './EditStatusModel';
 import { Redirect } from 'react-router-dom';
 import  { withRouter } from "react-router-dom";
+import _ from "lodash";
+
+//const pageSize =10;
 
   class FacilityOverview extends Component {
                
@@ -17,16 +21,17 @@ import  { withRouter } from "react-router-dom";
                     isAvailable: true,
                     numberOfEquipments: 2,
                     searchTerm1:'',
+                 
                   
                 };
-                this.state={facs:[],locs:[],books:[], addModalShow : false,editModalShow : false}
+                this.state={facs:[],locs:[],fax:[],books:[],bookss:[], addModalShow : false,editModalShow : false,editSSModalShow : false,}
                // this.state = { value: 'Kolkata' };
                // this.state = { value: 'ABCPune' };
                // this.state = { value: '9AM-10AM' };
                this.state = { redirect: null, };
                 this.state = { searchTerm3:'',};
                 this.container = React.createRef();
-                this.state = { open: false,
+                this.state = { open: false,show:true
                   };
                   this.handleButtonClick = () => {
                     this.setState((state) => {
@@ -35,12 +40,18 @@ import  { withRouter } from "react-router-dom";
                       };
                     });
                 }
+             
 
                 this.handleInputChange = this.handleInputChange.bind(this);
                 this.state = { value: 'football' };
 
                 this.handleChange = this.handleChange.bind(this);
                 this.handleSubmit = this.handleSubmit.bind(this);
+               
+               
+             
+                this.state={ paginatedPosts: 0,currentPage:1,pageSize:4,paginatedPosts1: 0,currentPage1:1,pageSize1:3,
+                    paginatedPosts2: 0,currentPage2:1,pageSize2:3}
             }
          
           componentDidMount(){
@@ -49,6 +60,31 @@ import  { withRouter } from "react-router-dom";
              .then(response => response && response.json())
              .then(response => {
                  this.setState({locs: response && response});
+                 fetch('https://localhost:44345/api/BookingStatusget')
+                 .then(response => response && response.json())
+                 .then(response => {
+                    this.setState({fax: response && response });
+                    this.setState({paginatedPosts: (_(response && response).slice(0).take(this.state.pageSize).value())});
+                 })
+                 fetch('https://localhost:44345/api/TimeslotBookings')
+                 .then(response => response && response.json())
+                 .then(response => {
+                     this.setState({ books: response && response });
+                     this.setState({paginatedPosts1: (_(response && response).slice(0).take(this.state.pageSize1).value())});
+                 })
+                 fetch('https://localhost:44345/api/LocationFacility')
+                 .then(response => response && response.json())
+                 .then(response => {
+                    this.setState({facs: response && response });
+                    this.setState({paginatedPosts2: (_(response && response).slice(0).take(this.state.pageSize2).value())});
+                 })
+                 if ( localStorage.getItem('val')==2){
+                    this.setState({ show:false})
+                    }
+                    else 
+                    {
+                      this.setState({show:true})
+                    }
              }
              )
              document.addEventListener("mousedown", this.handleClickOutside);
@@ -97,18 +133,20 @@ import  { withRouter } from "react-router-dom";
 
                 }
             refreshList(){
-            
+           
               fetch('https://localhost:44345/api/LocationFacility')
-              .then(response => response && response.json())
-             .then(response => {
-              this.setState({facs: response && response });
-               
-                })
-                fetch('https://localhost:44345/api/TimeslotBookings')
                 .then(response => response && response.json())
                 .then(response => {
-                    this.setState({ books: response && response });
+                   this.setState({facs: response && response });
                 })
+              
+                fetch('https://localhost:44345/api/GetBookings')
+                .then(response => response && response.json())
+                .then(response => {
+                    this.setState({ bookss: response && response });
+                })
+              
+              
                 
            }
            componentDidUpdate(){
@@ -130,12 +168,53 @@ import  { withRouter } from "react-router-dom";
 
          
          render() {
-            if (this.state.redirect) {
-                return <Redirect to={this.state.redirect} />
-              }
-             const {facs,locs,books,facid,facenable,facname,locid} = this.state;
+  // const pageSize=10;
+  if (this.state.redirect) {
+    return <Redirect to={this.state.redirect} />
+  }
+           
+             const {facs,locs,books,bookss,fax,facid,facenable,facname,locid,paginatedPosts,currentPage,pageSize,paginatedPosts1,currentPage1,pageSize1,
+                paginatedPosts2,currentPage2,pageSize2,show,bookid,timeslotid,locationid,sportsid,facilityid,
+                usersid,equipmentid,edate,cdate,bstatusid} = this.state;
              let addModalClose =() => this.setState({addModalShow : false});
              let editModalClose =() => this.setState({editModalShow : false});
+             let editSSModalClose = ()=>this.setState({editSSModalShow : false})
+           
+             const pageCount = fax ? Math.ceil( fax && fax.length/pageSize) : 0;
+             if (pageCount ===1) return null ;
+             const pages = _.range(1, pageCount +1);
+
+             const pagination = (pageNo) => { 
+              this.setState({currentPage : pageNo && pageNo});
+              const startIndex = (pageNo -1) * pageSize;  
+             const paginatedPost = _(fax && fax).slice(startIndex && startIndex).take(pageSize).value();
+              this.setState({paginatedPosts:paginatedPost && paginatedPost})
+             }
+
+
+             const pageCount1 = fax ? Math.ceil( books && books.length/pageSize1) : 0;
+             if (pageCount1 ===1) return null ;
+             const pages1 = _.range(1, pageCount1 +1);
+
+             const pagination1 = (pageNo1) => { 
+              this.setState({currentPage : pageNo1 && pageNo1});
+              const startIndex1 = (pageNo1 -1) * pageSize1;  
+             const paginatedPost1 = _(books && books).slice(startIndex1 && startIndex1).take(pageSize1).value();
+              this.setState({paginatedPosts1:paginatedPost1 && paginatedPost1})
+             }
+
+
+             const pageCount2 = fax ? Math.ceil( facs && facs.length/pageSize2) : 0;
+             if (pageCount2 ===1) return null ;
+             const pages2 = _.range(1, pageCount2 +1);
+
+             const pagination2 = (pageNo2) => { 
+              this.setState({currentPage2 : pageNo2 && pageNo2});
+              const startIndex2 = (pageNo2 -1) * pageSize2;  
+             const paginatedPost2 = _(facs && facs).slice(startIndex2 && startIndex2).take(pageSize2).value();
+              this.setState({paginatedPosts2:paginatedPost2 && paginatedPost2})
+             }
+           // alert(this.state.pageSize)
              
            
 
@@ -152,7 +231,8 @@ import  { withRouter } from "react-router-dom";
                                 <div class="tab">
                        
                                 <div  className="container" ref={this.container}>
-                            <button  onClick={()=>this.setState({redirect:"/UserManagement"})}> <a href="UserManagement">💻User Management</a></button>
+                                    {show ?
+                            <button  onClick={()=>this.setState({redirect:"/UserManagement"})}> <a href="UserManagement">💻User Management</a></button>:null}
                             
                             <button type="button" class="button" onClick={this.handleButtonClick}
                         >👲Admin ☰</button>
@@ -182,51 +262,33 @@ import  { withRouter } from "react-router-dom";
                             <br></br>
                             <h2 class="h2"> ✦ FACILITIES OVERVIEW  ✦</h2>
                             <br />
-                            <br></br>
-                            ✦ Location : <input type ="text"
-                      onChange={(event)=> {
-                          this.setState({searchTerm1 : event.target.value})
-                      }}
-                      /> 
-                 
-                          { facs && facs.filter((val) => {
-                           if (val && val.LOCATIONNAME.includes(this.state.searchTerm1)){
-                             return val             
-                         }
-                           else if(this.state.searchTerm1 == "") {
-                             return 0
-                           }
-                            })
-                      .map((val,key) =>{
-                          return (
-                                <Table>
+                            <Table >
                                 <thead>
                                     <tr>
-                      
-                                         <th>FACILITYID</th>
-                                        <th>FACILITYNAME</th>
+                                        <th></th>
                                         <th>LOCATION</th>
-                                        <th type="hidden"></th>
+                                        <th>FACILITY</th>
+                                        
                                         <th>Actions</th>
                                         </tr>
                                     </thead>
-                            <tbody>
-                            <tr key={key}>
-                                    
-                                        <td>{val && val.FACILITYID}</td>
-                                        <td>{val && val.FACILITYNAME}</td>
-                                        <td>{val && val.LOCATIONNAME}</td>
-                                        <td  type="hidden">{val && val.FACILITYENABLED}</td>
-                                        <td>
+                                    <tbody>
+                                    { paginatedPosts2 && paginatedPosts2.map(fac=>
+                                    <tr  key={fac.ID && fac.ID}>
+                                        <td></td>
+                                     <td>{fac && fac.LOCATIONNAME}</td>
+                                     <td>{fac && fac.FACILITYNAME}</td>
+                                   
+                                     <td>
                                         <ButtonToolbar>
                                             <Button 
                                             className="mr-2" variant="info"
-                                            onClick={()=>this.setState({editModalShow:true,facid : val && val.FACILITYID,facname: val && val.FACILITYNAME,locid: val && val.LOCATIONID})}
+                                            onClick={()=>this.setState({editModalShow:true,facid :fac && fac.FACILITYID,facname: fac && fac.FACILITYNAME,locid: fac && fac.LOCATIONID})}
                                             > Edit </Button>
 
                                             <Button
                                             className="mr-2" 
-                                            onClick={()=>this.deleteFac(val && val.FACILITYID)} 
+                                            onClick={()=>this.deleteFac(fac && fac.FACILITYID)} 
                                             variant="danger">Delete</Button>
                                             <EditFacModel
                                                 show={this.state.editModalShow}
@@ -238,14 +300,31 @@ import  { withRouter } from "react-router-dom";
                                             />
                                         </ButtonToolbar>
                                     </td>
-                                           
-                                        </tr>
-                                        </tbody>
-                            </Table>
-                        )
-                          })
-                   }
-                        <br></br>
+                                   </tr>
+                                    )}  
+                                            
+                                  
+                                </tbody>
+                               </Table>
+                               <nav className="d-flex justify-content-center">
+    <ul className="pagination">
+        {
+            pages2.map((page2) => (
+            <li className = {
+                page2 === currentPage2 ? "page-item active" : "page-item"}>
+                <p className="page-link"
+                onClick={()=>pagination2(page2 && page2)}>{page2 && page2}</p>
+                </li>
+            )
+            )
+        }
+       </ul>
+ 
+   </nav>
+                          
+                            <br></br>
+                           
+                      
                        <br></br>
                                  <ButtonToolbar>
                                    <Button
@@ -325,73 +404,9 @@ import  { withRouter } from "react-router-dom";
                              </Table>
           )} )}
         </div>
-                            <br></br>
-                            <br />
-                            <br></br>
-        ✦ Location  ➪ <input type ="text" 
-                            onChange={(event)=> {
-                                this.setState({searchTerm3 : event.target.value})
-                            }}
-                            /> 
-                            <br></br>
-                          
-                                 { books && books.filter((val) => {
-                          if (val && val.LOCATIONNAME.includes(this.state.searchTerm3)){
-                                return val
-                            }
-                            else if(this.state.searchTerm3 == "") {
-                                return null
-                                }
-                                else {
-                                    return null
-                                }
-      })
-                        .map((val,key) => {
-                            return (
-                                <Table>
-                                     <thead>
-                                <tr>
-                                <th>Booking Id</th>
-                                    <th>Facility</th>
-                                    <th>Sport</th>
-                                    <th>Event Date</th>
-                                    <th>Booking Date</th>
-                                    <th>TimeSlot</th>
-                                    <th>Booking Status</th>
-                                    <th>Location</th>
-                                    
-                                    
-                                   
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr key={key}>
-                               
-                                <td>{val && val.BOOKINGSID}</td>
-                                <td>{val && val.FACILITYNAME}</td>
-                                <td>{val && val.SPORTNAME}</td>
-                                <td>{val && val.EVENTDATE}</td>
-                                <td>{val && val.CREATEDDATE}</td>
-                                <td>{val && val.TIMESLOT}</td>
-                                <td>{val && val.BOOKINGSTATUS}</td>
-                                <td>{val && val.LOCATIONNAME}</td>
-                                <td>
-                                        <ButtonToolbar>
-                                            <Button
-                                                    className="mr-2"
-                                                    onClick={() => this.deleteBooking(val && val.BOOKINGSID)}
-                                                    variant="danger">Delete ❌</Button>
-                                               
-                                            </ButtonToolbar>
-                                        </td>
-                                </tr>
-                             </tbody>
-                         
-                             </Table>
-          )} )}
+            
           <br></br>
-          <br></br>
-          <h4 class ="h3"> ...Bookings...</h4>
+        
               
              <Table>
 
@@ -411,7 +426,7 @@ import  { withRouter } from "react-router-dom";
                             </thead>
                            
                             <tbody>
-                                {books && books.map(sport =>
+                                {paginatedPosts1 && paginatedPosts1.map(sport =>
                                     <tr key={sport.BOOKINGSID && sport.BOOKINGSID}>
 
                                         <td>{sport && sport.BOOKINGSID}</td>
@@ -438,6 +453,21 @@ import  { withRouter } from "react-router-dom";
                             </tbody>
                             
                             </Table>
+                            <nav className="d-flex justify-content-center">
+    <ul className="pagination">
+        {
+            pages1.map((page1) => (
+            <li className = {
+                page1 === currentPage1 ? "page-item active" : "page-item"}>
+                <p className="page-link"
+                onClick={()=>pagination1(page1 && page1)}>{page1 && page1}</p>
+                </li>
+            )
+            )
+        }
+       </ul>
+ 
+   </nav>
                            
                             <br></br>
                             <h4 class="h5">@ABC sports Facility</h4>

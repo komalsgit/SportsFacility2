@@ -1,4 +1,4 @@
-/*import React, {Component} from 'react';
+import React, {Component} from 'react';
 import {Modal,Button,Row,Col,Form,} from 'react-bootstrap';
 
 import Snackbar from '@material-ui/core/Snackbar';
@@ -7,7 +7,7 @@ import IconButton from '@material-ui/core/IconButton';
 export class EditStatusModel extends Component{
     constructor(props){
         super(props);
-        this.state = {UserRoleId:"",roles:[],snackbaropen: false, snackbarmsg: ''};
+        this.state = {BOOKINGSTATUSID:"",roles:[],snackbaropen: false, snackbarmsg: ''};
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     snackbarClose = (event) =>{
@@ -32,11 +32,11 @@ export class EditStatusModel extends Component{
                       BOOKINGSID:event.target.BOOKINGSID.value,
                       TIMESLOTID: event.target.BOOKINGSID.value,
                       LOCATIONID:event.target.LOCATIONID.value ,
-                        SPORTSID:event.target.SPORTSID.value,
-                   EVENTDATE:event.target.EVENTDATE.value,
-                   CREATEDDATE:event.target. CREATEDDATE.value,
-                   BOOKINGSTATUSID:event.target.BOOKINGSTATUSID.value,
-                      FACILITYID:event.target. FACILITYID.value,
+                      SPORTSID:event.target.SPORTSID.value,
+                      EVENTDATE:event.target.EVENTDATE.value,
+                      CREATEDDATE:event.target.CREATEDDATE.value,
+                      BOOKINGSTATUSID:event.target.BOOKINGSTATUSID.value,
+                      FACILITYID:event.target.FACILITYID.value,
                       USERID:event.target.USERID.value,
                       EQUIPMENTID:event.target.EQUIPMENTID.value,
                   // UserRoleId:event.target.UserRoleId.value,
@@ -51,11 +51,11 @@ export class EditStatusModel extends Component{
            .then(res => res.json())
                 .then((res)=>
                 {
-                  // alert(res );
+                   alert(res );
                  //  this.setState({snackbaropen:true,snackbarmsg:res})
                },
                 (error)=>{
-                  // alert('Failed')
+                   alert('Failed')
                   // this.setState({snackbaropen:true,snackbarmsg:'failed'})
                 }
                 )
@@ -189,8 +189,8 @@ export class EditStatusModel extends Component{
                  </Form.Group>
                
                  <Form.Label>BookingStatus</Form.Label>
-                    <Form.Control  name="BookingStatusid"as="select" onChange={(ddl => this.setState({BOOKINGSTATUSID:ddl.target.value}))}  
-                     defaultValue = {this.props.roleid} controlId="RoleDropdown" >
+                    <Form.Control  name="BOOKINGSTATUSID"as="select" onChange={(ddl => this.setState({BOOKINGSTATUSID:ddl.target.value}))}  
+                     defaultValue = {this.props.bstatusid} controlId="RoleDropdown" >
                       {
                         this.state.roles.map(location=>
                           <option  value={location.BOOKINGSTATUSID} >{location.BOOKINGSTATUS}</option>
@@ -198,35 +198,11 @@ export class EditStatusModel extends Component{
                       }
                       
                     </Form.Control> 
-                 <Form.Group controlId="USER_PWD">
-                     <Form.Control
-                     type="hidden"
-                     name="USER_PWD"
-                     required
-                     disabled
-                     defaultValue = {this.props.pwd}
-                     />
-                 </Form.Group>
-                 <Form.Group controlId="LOCATIONID">
-                     <Form.Control
-                     type="hidden"
-                     name="LOCATIONID"
-                     required
-                     disabled
-                     defaultValue = {this.props.locsid}
-                     />
-                 </Form.Group>
-                 <Form.Group controlId="ISACTIVE">
-                     <input
-                     type="hidden"
-                     name="ISACTIVE"
-                     disabled
-                     defaultValue = {this.props.roleenable}
-                    
- 
-                     />
-                      </Form.Group>
-                      <br></br>
+                
+                <br></br>
+                
+                
+                     
 
                  <Form.Group>
                  <Button type="submit">Submit</Button>
@@ -247,4 +223,4 @@ export class EditStatusModel extends Component{
  
          );
      }
-}*/
+}

@@ -7,12 +7,22 @@ export class AddBookModal extends Component{
    
     constructor(props){
         super(props);
+       // var today = new Date(),
+       // date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+      //  this.state = {
+      //  date: ""
+       // };
         this.state = { LOCATIONID :"",locations:[],FACILITYID:"",facies:[],TIMESLOTID:"",
-        slotss:[],BOOKINGSTATUSID:"",bstatus:[],SPORTSID:"",sportss:[],
+        slotss:[],BOOKINGSTATUSID:"",bstatus:[],SPORTSID:"",sportss:[],date:"",
         users:[],USERID:"",EQUIPMENTID:"",EVENTDATE:"",equips:[],snackbaropen: false, snackbarmsg: '',selectedDate: 0,date:0};
         this.handleSubmit = this.handleSubmit.bind(this);
+        
         }
        componentDidMount(event){
+       let today = new Date(),
+        dates = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+       this.setState({date:dates})
+       // alert(this.state.date)
         fetch ('https://localhost:44345/api/Locationss')
         .then(response => response.json())
         .then(data => {
@@ -50,6 +60,7 @@ export class AddBookModal extends Component{
        // });
       //  });
        }
+
       
          snackbarClose = (event) =>{
             this.setState({snackbaropen:false});
@@ -58,6 +69,7 @@ export class AddBookModal extends Component{
          
         
          handleSubmit(event) {
+          
            alert("Event is Booked Successfully !!")
     
             event.preventDefault();
@@ -76,7 +88,7 @@ export class AddBookModal extends Component{
             
                     SPORTSID:this.state.SPORTSID,
                     EVENTDATE:event.target.EVENTDATE.value,
-                    CREATEDDATE:event.target.CREATEDDATE.value,
+                    CREATEDDATE:this.state.date,
                     BOOKINGSTATUSID:1,
                    FACILITYID:this.state.FACILITYID,
                   
@@ -147,6 +159,9 @@ export class AddBookModal extends Component{
        
       
         render() {
+        //  var today = new Date(),
+         // date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+         // this.setState({date:date})
         const{selectedDate}=this.state;
         return(
             <div className="container" >

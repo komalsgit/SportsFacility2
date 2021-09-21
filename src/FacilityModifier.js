@@ -9,6 +9,7 @@ import { EditTimeSlot } from './EditTimeSlot';
 import { AddEquipmentModel } from './AddEquipmentModel';
 import { Redirect } from 'react-router-dom';
 import  { withRouter } from "react-router-dom";
+import _ from "lodash";
 
 
 
@@ -23,9 +24,9 @@ class FacilityModifier extends Component {
             searchTerm2:'',
              };
              this.state = { redirect: null, };
-        this.state = { sports: [], equipments: [], locs: [],sportse:[], addSModalShow: false, editSModalShow: false, addPModalShow: false }
+        this.state = { sports: [], equipments: [], locs: [],sportse:[],sportss:[], addSModalShow: false, editSModalShow: false, addPModalShow: false }
         this.container = React.createRef();
-        this.state = { open: false,
+        this.state = { open: false,show:true
           };
           this.handleButtonClick = () => {
             this.setState((state) => {
@@ -34,7 +35,7 @@ class FacilityModifier extends Component {
               };
             });
         }
-      //  this.state = { value: 'Kolkata' };
+       
       //  this.state = { value: 'ABCPune' };
       //  this.state = { value: '9AM-10AM' };
 
@@ -43,6 +44,7 @@ class FacilityModifier extends Component {
         this.state = {black: true};
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.state = { paginatedPosts3: 0,currentPage3:1,pageSize3:4, };
     }
     changeColor(){
         this.setState({black: !this.state.black})
@@ -55,7 +57,20 @@ class FacilityModifier extends Component {
             this.setState({ locs: response && response });
         }
         )
+        fetch('https://localhost:44345/api/SportsGetNew')
+        .then(response => response && response.json())
+        .then(response => {
+            this.setState({ sportss: response && response });
+            this.setState({paginatedPosts3: (_(response && response).slice(0).take(this.state.pageSize3).value())});
+                });
         document.addEventListener("mousedown", this.handleClickOutside);
+        if ( localStorage.getItem('val')==2){
+            this.setState({ show:false})
+            }
+            else 
+            {
+              this.setState({show:true})
+            }
     }
    // componentDidMount() {
      //   document.addEventListener("mousedown", this.handleClickOutside);
@@ -95,7 +110,8 @@ class FacilityModifier extends Component {
             .then(response => response.json())
             .then(data => {
                 this.setState({ equipments: data })
-                        });
+              
+                    });
             })
     }
     componentDidUpdate() {
@@ -133,11 +149,22 @@ class FacilityModifier extends Component {
             return <Redirect to={this.state.redirect} />
           }
        
-        const { sports,equipments, locs, slotname, sportid,slotid} = this.state;
+        const { sports,equipments,sportss, locs, slotname, sportid,slotid,paginatedPosts3,currentPage3,pageSize3,show} = this.state;
         let addSModalClose = () => this.setState({ addSModalShow: false });
         let editSModalClose = () => this.setState({ editSModalShow: false });
         let addPModalClose = () => this.setState({ addPModalShow: false });
         let btn_class = this.state.black ? "blackButton" : "whiteButton";
+
+        const pageCount3 = sportss ? Math.ceil( sportss && sportss.length/pageSize3) : 0;
+        if (pageCount3 ===1) return null ;
+        const pages3 = _.range(1, pageCount3 +1);
+
+        const pagination3 = (pageNo) => { 
+         this.setState({currentPage3 : pageNo && pageNo});
+         const startIndex3 = (pageNo -1) * pageSize3;  
+        const paginatedPost3 = _(sportss && sportss).slice(startIndex3 && startIndex3).take(pageSize3).value();
+         this.setState({paginatedPosts3:paginatedPost3 && paginatedPost3})
+        }
       
              return (
           
@@ -148,7 +175,8 @@ class FacilityModifier extends Component {
                         <h1 class="wrapper"> ⚽⚾  ABC Sports Facility  🎾🏀</h1>
                          <div class="tab">
                         <div  className="container" ref={this.container}>
-                            <button onClick={()=>this.setState({redirect:"/UserManagement"})}>💻 User Management</button>
+                        { show ? 
+                            <button onClick={()=>this.setState({redirect:"/UserManagement"})}>💻 User Management</button>:null}
                             <button type="button" class="button" onClick={this.handleButtonClick}
                         > 👲Admin ☰</button>
                          <button  onClick={()=>this.setState({redirect:"/Home"})}> ⛪Home/Booking</button>
@@ -178,18 +206,18 @@ class FacilityModifier extends Component {
                          <br></br>
                         <h3 class="h3">SPORTS MANAGEMENT</h3>
                         <br></br>
-                        ✦ Sport   :  <input type ="text" 
+                        ✦ Facility :  <input type ="text" 
                       onChange={(event)=> {
                           this.setState({searchTerm1 : event.target.value})
                       }}
                       /> 
                  
-                          { sports && sports.filter((val) => {
-                           if (val && val.SPORTNAME.includes(this.state.searchTerm1)){
+                          { sportss && sportss.filter((val) => {
+                           if (val && val.FACILITYNAME.includes(this.state.searchTerm1)){
                              return val             
                          }
-                           else if(this.state.searchTerm1 == "") {
-                             return 0
+                           else if(this.state.searchTerm1 == null) {
+                             return null
                            }
                             })
                       .map((val,key) =>{
@@ -197,21 +225,18 @@ class FacilityModifier extends Component {
                                 <Table>
                                 <thead>
                                 <tr>
+                                    <th>Location</th>
                                     <th>Facility</th>
                                     <th>SportName</th>
-                                    <th>Equipments</th>
-                                    <th>Slots</th>
-                                    <th>Location</th>
-                                </tr>
+                                    </tr>
                             </thead>
                             <tbody>
                             <tr key={key}>
-                                    
+                                        <td>{val && val.LOCATIONNAME}</td>
                                         <td>{val && val.FACILITYNAME}</td>
                                         <td>{val && val.SPORTNAME}</td>
-                                        <td>{val && val.EQUIPMENTNAME}</td>
-                                        <td>{val && val.TIMESLOT}</td>
-                                        <td>{val && val.LOCATIONNAME}</td>
+                                      
+                                       
                                         <td>
                                             <ButtonToolbar>
                                                 <Button
@@ -251,14 +276,14 @@ class FacilityModifier extends Component {
                  
                  
                  
-                        ✦ Facility : <input type ="text"
+                        ✦ Sport : <input type ="text"
                       onChange={(event)=> {
                           this.setState({searchTerm : event.target.value})
                       }}
                       /> 
                  
-                          { sports && sports.filter((val) => {
-                           if (val && val.FACILITYNAME.includes(this.state.searchTerm)){
+                          { sportss && sportss.filter((val) => {
+                           if (val && val.SPORTNAME.includes(this.state.searchTerm)){
                              return val
                          }
                            else if(this.state.searchTerm == "") {
@@ -270,21 +295,18 @@ class FacilityModifier extends Component {
                                 <Table>
                                 <thead>
                                 <tr>
-                                    <th>Facility</th>
-                                    <th>SportName</th>
-                                    <th>Equipments</th>
-                                    <th>Slots</th>
                                     <th>Location</th>
+                                    <th>Facility</th>
+                                    <th>Sport</th>
+                                    
                                 </tr>
                             </thead>
                             <tbody>
                             <tr key={key}>
-                                    
+                                        <td>{val && val.LOCATIONNAME}</td>
                                         <td>{val && val.FACILITYNAME}</td>
                                         <td>{val && val.SPORTNAME}</td>
-                                        <td>{val && val.EQUIPMENTNAME}</td>
-                                        <td>{val && val.TIMESLOT}</td>
-                                        <td>{val && val.LOCATIONNAME}</td>
+                                       
                                         <td>
                                             <ButtonToolbar>
                                                 <Button
@@ -315,6 +337,53 @@ class FacilityModifier extends Component {
                    }
                    
                            
+                         <br />
+                         <br />
+                         <Table>
+                        <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Location</th>
+                                    <th>Facility</th>
+                                    <th>Sports Available</th>
+                                    <th>Action</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {paginatedPosts3 && paginatedPosts3.map(sport =>
+                                    <tr key={sport.SPORTSID && sport.SPORTSID}>
+                                        <td></td>
+                                        <td type="hidden">{sport && sport.LOCATIONNAME}</td>
+                                        <td type="hidden">{sport && sport.FACILITYNAME}</td>
+                                        <td>{sport && sport.SPORTNAME}</td>
+                                        <td>
+                                            <ButtonToolbar>
+                                                    <Button
+                                                    className="mr-2"
+                                                    onClick={() => this.deleteFac(sport && sport.SPORTID)}
+                                                    variant="danger">Delete</Button>
+                                            </ButtonToolbar>
+                                        </td>
+                                    </tr>)}
+                            </tbody>
+                        </Table>
+                        <nav className="d-flex justify-content-center">
+    <ul className="pagination">
+        {
+            pages3.map((page) => (
+            <li className = {
+                page === currentPage3 ? "page-item active" : "page-item"}>
+                <p className="page-link"
+                onClick={()=>pagination3(page && page)}>{page && page}</p>
+                </li>
+            )
+            )
+        }
+       </ul>
+ 
+   </nav>
+                         <br />
                          <br />
                             <ButtonToolbar>
                             <Button

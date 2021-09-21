@@ -67,7 +67,7 @@ class Login2 extends Component {
               });
              // alert(op);
               localStorage.setItem('val',op)
-              
+           
               // .then(res => res.json())
               /////////// .then((response)=>
              //////////////////  {
@@ -76,6 +76,32 @@ class Login2 extends Component {
              ///////////////////////  }
             }
            );
+           fetch(`https://localhost:44345/api/GetUserId?EMAIL=${event.target.EMAIL.value}`)
+           .then(response => response.json())
+         
+          .then(data => {
+              this.setState({ equips: data })
+            // alert(JSON.stringify(data))
+           //  localStorage.setItem('Idm',JSON.stringify(data))
+             var op1 = data.map(function(item) {
+               var keys = Object.keys(item);
+               var arr1 = [];
+               keys.forEach(function(key) {
+                 arr1.push(item[key]);
+               });
+               return arr1;
+             });
+            // alert(op);
+             localStorage.setItem('val1',op1)
+          
+             // .then(res => res.json())
+             /////////// .then((response)=>
+            //////////////////  {
+             //////////////////////////  localStorage.setItem('Idm',JSON.stringify(response))
+           //localStorage.setItem('Idm',response.value)
+            ///////////////////////  }
+           }
+          );
            // this.setState({ isAuth : true })
            
            fetch ('https://localhost:44345/api/LoginManagement/',{
@@ -193,8 +219,10 @@ class Login2 extends Component {
                      </Form.Group>
                      </Col>
                      </Row>
-                   
-            <br></br>
+                    
+         <p className="forgot-password text-right">
+           <Link to={'/forgot'}>Forgot Password?</Link></p>
+        
             <Row>
               <Col  xs={10} md={3}></Col>
                      <Col  xs={5} md={5}  class="col">
@@ -231,8 +259,7 @@ class Login2 extends Component {
 
                               
             </div>
-            <br></br>
-            <br></br>
+          
             <h4 class="h5">@ABC sports Facility</h4>
                </form>
                </div>

@@ -21,6 +21,8 @@ import Logout from './Logout';
 import RegistrationForm from './components/RegistrationForm/RegistrationForm';
 import Login2 from './Login2';
 import { AddRoleModal } from './AddRoleModal';
+import { forgotcomponent } from './forgotcomponent';
+
 
  
 
@@ -63,6 +65,7 @@ class App extends Component {
           <Route path="/login2" component={Login2} />
           <Route path="/login2/home" component={Home} />
           <Route path="/logout" component={Logout} />
+          <Route path="/forgot" component={forgotcomponent} />
           
         </Switch>
         </Router>
