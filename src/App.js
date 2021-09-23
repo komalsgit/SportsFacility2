@@ -22,6 +22,7 @@ import RegistrationForm from './components/RegistrationForm/RegistrationForm';
 import Login2 from './Login2';
 import { AddRoleModal } from './AddRoleModal';
 import { forgotcomponent } from './forgotcomponent';
+import ForgotPassword from './ForgotPassword';
 
 
  
@@ -29,11 +30,15 @@ import { forgotcomponent } from './forgotcomponent';
 class App extends Component {
   constructor(props) {
     super(props);
+   // var cors = require('cors')
+
+   // App.use(cors()) 
    
   //  this.state = {
     //  isAuth: false
    // };
   }
+ 
  
   render(){
  
@@ -66,6 +71,7 @@ class App extends Component {
           <Route path="/login2/home" component={Home} />
           <Route path="/logout" component={Logout} />
           <Route path="/forgot" component={forgotcomponent} />
+          <Route exact path="/forgotpassword" component={ForgotPassword} />
           
         </Switch>
         </Router>

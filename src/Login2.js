@@ -221,7 +221,7 @@ class Login2 extends Component {
                      </Row>
                     
          <p className="forgot-password text-right">
-           <Link to={'/forgot'}>Forgot Password?</Link></p>
+           <Link to={'/forgotpassword'}>Forgot Password?</Link></p>
         
             <Row>
               <Col  xs={10} md={3}></Col>
